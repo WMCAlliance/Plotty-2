@@ -1,10 +1,19 @@
 package com.daviga404;
 
+import com.daviga404.commands.PlottyExecutor;
+import com.daviga404.data.DataManager;
+import com.daviga404.data.PlottyPlayer;
+import com.daviga404.language.Lang;
+import com.daviga404.language.LangManager;
+import com.daviga404.plots.Plot;
+import com.daviga404.plots.PlotClearer;
+import com.daviga404.plots.PlotRegion;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.milkbowl.vault.economy.Economy;
-
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,17 +25,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.daviga404.commands.PlottyExecutor;
-import com.daviga404.data.DataManager;
-import com.daviga404.data.PlottyPlayer;
-import com.daviga404.language.Lang;
-import com.daviga404.language.LangManager;
-import com.daviga404.plots.Plot;
-import com.daviga404.plots.PlotClearer;
-import com.daviga404.plots.PlotRegion;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Plotty extends JavaPlugin{
 	public WorldGuardPlugin worldGuard;
@@ -65,7 +63,7 @@ public class Plotty extends JavaPlugin{
 				List<String> list = stringArrayToList(dm.config.playerGrantNotify);
 				if(list.contains(e.getPlayer().getName())){
 					if(dm.getPlayer(e.getPlayer().getName()).grantedPlots > 0){
-						e.getPlayer().sendMessage("�1[Plotty] �bYou have �9"+dm.getPlayer(e.getPlayer().getName()).grantedPlots+" �aplots allocated to you. You can claim them with /plot claim or /plot new!");
+						e.getPlayer().sendMessage(ChatColor.DARK_BLUE + "[Plotty] " + ChatColor.AQUA + "You have " + ChatColor.BLUE + dm.getPlayer(e.getPlayer().getName()).grantedPlots + " " + ChatColor.AQUA + "plots allocated to you. You can claim them with /plot claim or /plot new!");
 					}
 					list.remove(e.getPlayer().getName());
 					String[] listArray = list.toArray(new String[list.size()]);

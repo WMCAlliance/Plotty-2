@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import org.bukkit.ChatColor;
 
 public class LangManager {
 	private Plotty plugin;
@@ -15,6 +16,7 @@ public class LangManager {
 	private Lang language;
 	private Gson gson;
 	private Lang defaultLang;
+	char amp = '&';
 	public LangManager(Plotty pl) throws Exception{
 		defaultLang = new Lang();
 		defaultLang.alreadyFriend = "&1[Plotty] &9This player is already a friend in your plot.";
@@ -59,7 +61,7 @@ public class LangManager {
 			buff += ln;
 		}
 		br.close();
-		buff = buff.replaceAll("&", "�");
+		ChatColor.translateAlternateColorCodes(amp, buff);
 		language = gson.fromJson(buff, Lang.class);
 		checkDefaults();
 	}
@@ -86,28 +88,29 @@ public class LangManager {
 		language.plotHere = language.plotHere == null ? defaultLang.plotHere : language.plotHere;
 		language.reachedMaxPlots = language.reachedMaxPlots == null ? defaultLang.reachedMaxPlots : language.reachedMaxPlots;
 		language.teleportedToPlot = language.teleportedToPlot == null ? defaultLang.teleportedToPlot : language.teleportedToPlot;
-		language.alreadyFriend = language.alreadyFriend.replaceAll("�","&");
-		language.cantVote = language.cantVote.replaceAll("�","&");
-		language.createdPlot = language.createdPlot.replaceAll("�","&");
-		language.dontOwn = language.dontOwn.replaceAll("�","&");
-		language.friendAdded = language.friendAdded.replaceAll("�","&");
-		language.friendNotFound = language.friendNotFound.replaceAll("�","&");
-		language.friendRemoved = language.friendRemoved.replaceAll("�","&");
-		language.madePrivate = language.madePrivate.replaceAll("�","&");
-		language.madePublic = language.madePublic.replaceAll("�","&");
-		language.moneyTaken = language.moneyTaken.replaceAll("�","&");
-		language.mustBeInPlotsWorld = language.mustBeInPlotsWorld.replaceAll("�","&");
-		language.mustBePlayer = language.mustBePlayer.replaceAll("�","&");
-		language.noMoney = language.noMoney.replaceAll("�","&");
-		language.notFound = language.notFound.replaceAll("�","&");
-		language.notStandingInPlot = language.notStandingInPlot.replaceAll("�","&");
-		language.plotClaimed = language.plotClaimed.replaceAll("�","&");
-		language.plotCleared = language.plotCleared.replaceAll("�","&");
-		language.plotDeleted = language.plotDeleted.replaceAll("�","&");
-		language.plotFree = language.plotFree.replaceAll("�","&");
-		language.plotHere = language.plotHere.replaceAll("�","&");
-		language.reachedMaxPlots = language.reachedMaxPlots.replaceAll("�","&");
-		language.teleportedToPlot = language.teleportedToPlot.replaceAll("�","&");
+		//TODO: Properly do this conversion
+        language.alreadyFriend = language.alreadyFriend.replaceAll("\u00A7","&");
+        language.cantVote = language.cantVote.replaceAll("\u00A7","&");
+        language.createdPlot = language.createdPlot.replaceAll("\u00A7","&");
+        language.dontOwn = language.dontOwn.replaceAll("\u00A7","&");
+        language.friendAdded = language.friendAdded.replaceAll("\u00A7","&");
+        language.friendNotFound = language.friendNotFound.replaceAll("\u00A7","&");
+        language.friendRemoved = language.friendRemoved.replaceAll("\u00A7","&");
+        language.madePrivate = language.madePrivate.replaceAll("\u00A7","&");
+        language.madePublic = language.madePublic.replaceAll("\u00A7","&");
+        language.moneyTaken = language.moneyTaken.replaceAll("\u00A7","&");
+        language.mustBeInPlotsWorld = language.mustBeInPlotsWorld.replaceAll("\u00A7","&");
+        language.mustBePlayer = language.mustBePlayer.replaceAll("\u00A7","&");
+        language.noMoney = language.noMoney.replaceAll("\u00A7","&");
+        language.notFound = language.notFound.replaceAll("\u00A7","&");
+        language.notStandingInPlot = language.notStandingInPlot.replaceAll("\u00A7","&");
+        language.plotClaimed = language.plotClaimed.replaceAll("\u00A7","&");
+        language.plotCleared = language.plotCleared.replaceAll("\u00A7","&");
+        language.plotDeleted = language.plotDeleted.replaceAll("\u00A7","&");
+        language.plotFree = language.plotFree.replaceAll("\u00A7","&");
+        language.plotHere = language.plotHere.replaceAll("\u00A7","&");
+        language.reachedMaxPlots = language.reachedMaxPlots.replaceAll("\u00A7","&");
+        language.teleportedToPlot = language.teleportedToPlot.replaceAll("\u00A7","&");
 		try {
 			FileWriter fw = new FileWriter(file);
 			fw.write(gson.toJson(language,Lang.class));
@@ -115,28 +118,28 @@ public class LangManager {
 		}catch(Exception e1){
 			e1.printStackTrace();
 		}
-		language.alreadyFriend = language.alreadyFriend.replaceAll("&","�");
-		language.cantVote = language.cantVote.replaceAll("&","�");
-		language.createdPlot = language.createdPlot.replaceAll("&","�");
-		language.dontOwn = language.dontOwn.replaceAll("&","�");
-		language.friendAdded = language.friendAdded.replaceAll("&","�");
-		language.friendNotFound = language.friendNotFound.replaceAll("&","�");
-		language.friendRemoved = language.friendRemoved.replaceAll("&","�");
-		language.madePrivate = language.madePrivate.replaceAll("&","�");
-		language.madePublic = language.madePublic.replaceAll("&","�");
-		language.moneyTaken = language.moneyTaken.replaceAll("&","�");
-		language.mustBeInPlotsWorld = language.mustBeInPlotsWorld.replaceAll("&","�");
-		language.mustBePlayer = language.mustBePlayer.replaceAll("&","�");
-		language.noMoney = language.noMoney.replaceAll("&","�");
-		language.notFound = language.notFound.replaceAll("&","�");
-		language.notStandingInPlot = language.notStandingInPlot.replaceAll("&","�");
-		language.plotClaimed = language.plotClaimed.replaceAll("&","�");
-		language.plotCleared = language.plotCleared.replaceAll("&","�");
-		language.plotDeleted = language.plotDeleted.replaceAll("&","�");
-		language.plotFree = language.plotFree.replaceAll("&","�");
-		language.plotHere = language.plotHere.replaceAll("&","�");
-		language.reachedMaxPlots = language.reachedMaxPlots.replaceAll("&","�");
-		language.teleportedToPlot = language.teleportedToPlot.replaceAll("&","�");
+		ChatColor.translateAlternateColorCodes(amp, language.alreadyFriend);
+		ChatColor.translateAlternateColorCodes(amp, language.cantVote);
+		ChatColor.translateAlternateColorCodes(amp, language.createdPlot);
+		ChatColor.translateAlternateColorCodes(amp, language.dontOwn);
+		ChatColor.translateAlternateColorCodes(amp, language.friendAdded);
+		ChatColor.translateAlternateColorCodes(amp, language.friendNotFound);
+		ChatColor.translateAlternateColorCodes(amp, language.friendRemoved);
+		ChatColor.translateAlternateColorCodes(amp, language.madePrivate);
+		ChatColor.translateAlternateColorCodes(amp, language.madePublic);
+		ChatColor.translateAlternateColorCodes(amp, language.moneyTaken);
+		ChatColor.translateAlternateColorCodes(amp, language.mustBeInPlotsWorld);
+		ChatColor.translateAlternateColorCodes(amp, language.mustBePlayer);
+		ChatColor.translateAlternateColorCodes(amp, language.noMoney);
+		ChatColor.translateAlternateColorCodes(amp, language.notFound);
+		ChatColor.translateAlternateColorCodes(amp, language.notStandingInPlot);
+		ChatColor.translateAlternateColorCodes(amp, language.plotClaimed);
+		ChatColor.translateAlternateColorCodes(amp, language.plotCleared);
+		ChatColor.translateAlternateColorCodes(amp, language.plotDeleted);
+		ChatColor.translateAlternateColorCodes(amp, language.plotFree);
+		ChatColor.translateAlternateColorCodes(amp, language.plotHere);
+		ChatColor.translateAlternateColorCodes(amp, language.reachedMaxPlots);
+		ChatColor.translateAlternateColorCodes(amp, language.teleportedToPlot);
 	}
 	public Lang getLang(){
 		return language;

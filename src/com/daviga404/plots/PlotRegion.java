@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.managers.storage.StorageException;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -36,7 +37,7 @@ public class PlotRegion {
 					Flag f = (Flag)flag;
 					pcr.setFlag(f, obj);
 				}catch(Exception e1){
-					s.sendMessage("�4[Plotty] �cError in config: custom WorldGuard flag has incorrect value.");
+					s.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Error in config: custom WorldGuard flag has incorrect value.");
 				}
 			}
 		}
