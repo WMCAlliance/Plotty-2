@@ -1,15 +1,13 @@
 package com.daviga404.language;
 
+import com.daviga404.Plotty;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
-
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
-import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
-
-import com.daviga404.Plotty;
 
 public class LangManager {
 	private Plotty plugin;
@@ -61,7 +59,7 @@ public class LangManager {
 			buff += ln;
 		}
 		br.close();
-		buff = buff.replaceAll("&", "§");
+		buff = buff.replaceAll("&", "ï¿½");
 		language = gson.fromJson(buff, Lang.class);
 		checkDefaults();
 	}
@@ -88,28 +86,28 @@ public class LangManager {
 		language.plotHere = language.plotHere == null ? defaultLang.plotHere : language.plotHere;
 		language.reachedMaxPlots = language.reachedMaxPlots == null ? defaultLang.reachedMaxPlots : language.reachedMaxPlots;
 		language.teleportedToPlot = language.teleportedToPlot == null ? defaultLang.teleportedToPlot : language.teleportedToPlot;
-		language.alreadyFriend = language.alreadyFriend.replaceAll("§","&");
-		language.cantVote = language.cantVote.replaceAll("§","&");
-		language.createdPlot = language.createdPlot.replaceAll("§","&");
-		language.dontOwn = language.dontOwn.replaceAll("§","&");
-		language.friendAdded = language.friendAdded.replaceAll("§","&");
-		language.friendNotFound = language.friendNotFound.replaceAll("§","&");
-		language.friendRemoved = language.friendRemoved.replaceAll("§","&");
-		language.madePrivate = language.madePrivate.replaceAll("§","&");
-		language.madePublic = language.madePublic.replaceAll("§","&");
-		language.moneyTaken = language.moneyTaken.replaceAll("§","&");
-		language.mustBeInPlotsWorld = language.mustBeInPlotsWorld.replaceAll("§","&");
-		language.mustBePlayer = language.mustBePlayer.replaceAll("§","&");
-		language.noMoney = language.noMoney.replaceAll("§","&");
-		language.notFound = language.notFound.replaceAll("§","&");
-		language.notStandingInPlot = language.notStandingInPlot.replaceAll("§","&");
-		language.plotClaimed = language.plotClaimed.replaceAll("§","&");
-		language.plotCleared = language.plotCleared.replaceAll("§","&");
-		language.plotDeleted = language.plotDeleted.replaceAll("§","&");
-		language.plotFree = language.plotFree.replaceAll("§","&");
-		language.plotHere = language.plotHere.replaceAll("§","&");
-		language.reachedMaxPlots = language.reachedMaxPlots.replaceAll("§","&");
-		language.teleportedToPlot = language.teleportedToPlot.replaceAll("§","&");
+		language.alreadyFriend = language.alreadyFriend.replaceAll("ï¿½","&");
+		language.cantVote = language.cantVote.replaceAll("ï¿½","&");
+		language.createdPlot = language.createdPlot.replaceAll("ï¿½","&");
+		language.dontOwn = language.dontOwn.replaceAll("ï¿½","&");
+		language.friendAdded = language.friendAdded.replaceAll("ï¿½","&");
+		language.friendNotFound = language.friendNotFound.replaceAll("ï¿½","&");
+		language.friendRemoved = language.friendRemoved.replaceAll("ï¿½","&");
+		language.madePrivate = language.madePrivate.replaceAll("ï¿½","&");
+		language.madePublic = language.madePublic.replaceAll("ï¿½","&");
+		language.moneyTaken = language.moneyTaken.replaceAll("ï¿½","&");
+		language.mustBeInPlotsWorld = language.mustBeInPlotsWorld.replaceAll("ï¿½","&");
+		language.mustBePlayer = language.mustBePlayer.replaceAll("ï¿½","&");
+		language.noMoney = language.noMoney.replaceAll("ï¿½","&");
+		language.notFound = language.notFound.replaceAll("ï¿½","&");
+		language.notStandingInPlot = language.notStandingInPlot.replaceAll("ï¿½","&");
+		language.plotClaimed = language.plotClaimed.replaceAll("ï¿½","&");
+		language.plotCleared = language.plotCleared.replaceAll("ï¿½","&");
+		language.plotDeleted = language.plotDeleted.replaceAll("ï¿½","&");
+		language.plotFree = language.plotFree.replaceAll("ï¿½","&");
+		language.plotHere = language.plotHere.replaceAll("ï¿½","&");
+		language.reachedMaxPlots = language.reachedMaxPlots.replaceAll("ï¿½","&");
+		language.teleportedToPlot = language.teleportedToPlot.replaceAll("ï¿½","&");
 		try {
 			FileWriter fw = new FileWriter(file);
 			fw.write(gson.toJson(language,Lang.class));
@@ -117,28 +115,28 @@ public class LangManager {
 		}catch(Exception e1){
 			e1.printStackTrace();
 		}
-		language.alreadyFriend = language.alreadyFriend.replaceAll("&","§");
-		language.cantVote = language.cantVote.replaceAll("&","§");
-		language.createdPlot = language.createdPlot.replaceAll("&","§");
-		language.dontOwn = language.dontOwn.replaceAll("&","§");
-		language.friendAdded = language.friendAdded.replaceAll("&","§");
-		language.friendNotFound = language.friendNotFound.replaceAll("&","§");
-		language.friendRemoved = language.friendRemoved.replaceAll("&","§");
-		language.madePrivate = language.madePrivate.replaceAll("&","§");
-		language.madePublic = language.madePublic.replaceAll("&","§");
-		language.moneyTaken = language.moneyTaken.replaceAll("&","§");
-		language.mustBeInPlotsWorld = language.mustBeInPlotsWorld.replaceAll("&","§");
-		language.mustBePlayer = language.mustBePlayer.replaceAll("&","§");
-		language.noMoney = language.noMoney.replaceAll("&","§");
-		language.notFound = language.notFound.replaceAll("&","§");
-		language.notStandingInPlot = language.notStandingInPlot.replaceAll("&","§");
-		language.plotClaimed = language.plotClaimed.replaceAll("&","§");
-		language.plotCleared = language.plotCleared.replaceAll("&","§");
-		language.plotDeleted = language.plotDeleted.replaceAll("&","§");
-		language.plotFree = language.plotFree.replaceAll("&","§");
-		language.plotHere = language.plotHere.replaceAll("&","§");
-		language.reachedMaxPlots = language.reachedMaxPlots.replaceAll("&","§");
-		language.teleportedToPlot = language.teleportedToPlot.replaceAll("&","§");
+		language.alreadyFriend = language.alreadyFriend.replaceAll("&","ï¿½");
+		language.cantVote = language.cantVote.replaceAll("&","ï¿½");
+		language.createdPlot = language.createdPlot.replaceAll("&","ï¿½");
+		language.dontOwn = language.dontOwn.replaceAll("&","ï¿½");
+		language.friendAdded = language.friendAdded.replaceAll("&","ï¿½");
+		language.friendNotFound = language.friendNotFound.replaceAll("&","ï¿½");
+		language.friendRemoved = language.friendRemoved.replaceAll("&","ï¿½");
+		language.madePrivate = language.madePrivate.replaceAll("&","ï¿½");
+		language.madePublic = language.madePublic.replaceAll("&","ï¿½");
+		language.moneyTaken = language.moneyTaken.replaceAll("&","ï¿½");
+		language.mustBeInPlotsWorld = language.mustBeInPlotsWorld.replaceAll("&","ï¿½");
+		language.mustBePlayer = language.mustBePlayer.replaceAll("&","ï¿½");
+		language.noMoney = language.noMoney.replaceAll("&","ï¿½");
+		language.notFound = language.notFound.replaceAll("&","ï¿½");
+		language.notStandingInPlot = language.notStandingInPlot.replaceAll("&","ï¿½");
+		language.plotClaimed = language.plotClaimed.replaceAll("&","ï¿½");
+		language.plotCleared = language.plotCleared.replaceAll("&","ï¿½");
+		language.plotDeleted = language.plotDeleted.replaceAll("&","ï¿½");
+		language.plotFree = language.plotFree.replaceAll("&","ï¿½");
+		language.plotHere = language.plotHere.replaceAll("&","ï¿½");
+		language.reachedMaxPlots = language.reachedMaxPlots.replaceAll("&","ï¿½");
+		language.teleportedToPlot = language.teleportedToPlot.replaceAll("&","ï¿½");
 	}
 	public Lang getLang(){
 		return language;

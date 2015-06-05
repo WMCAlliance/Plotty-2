@@ -1,6 +1,5 @@
 package com.daviga404;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.BukkitMetricsLite;
 
 import com.daviga404.commands.PlottyExecutor;
 import com.daviga404.data.DataManager;
@@ -60,12 +58,6 @@ public class Plotty extends JavaPlugin{
 		}
 		lang = langMan.getLang();
 		initVault();
-		try {
-			BukkitMetricsLite bml = new BukkitMetricsLite(this);
-			bml.start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		this.getServer().getPluginManager().registerEvents(new Listener(){
 			@SuppressWarnings("unused")
 			@EventHandler(priority = EventPriority.NORMAL)
@@ -73,7 +65,7 @@ public class Plotty extends JavaPlugin{
 				List<String> list = stringArrayToList(dm.config.playerGrantNotify);
 				if(list.contains(e.getPlayer().getName())){
 					if(dm.getPlayer(e.getPlayer().getName()).grantedPlots > 0){
-						e.getPlayer().sendMessage("§1[Plotty] §bYou have §9"+dm.getPlayer(e.getPlayer().getName()).grantedPlots+" §aplots allocated to you. You can claim them with /plot claim or /plot new!");
+						e.getPlayer().sendMessage("ï¿½1[Plotty] ï¿½bYou have ï¿½9"+dm.getPlayer(e.getPlayer().getName()).grantedPlots+" ï¿½aplots allocated to you. You can claim them with /plot claim or /plot new!");
 					}
 					list.remove(e.getPlayer().getName());
 					String[] listArray = list.toArray(new String[list.size()]);

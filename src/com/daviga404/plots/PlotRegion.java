@@ -1,17 +1,16 @@
 package com.daviga404.plots;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.command.CommandSender;
-
 import com.daviga404.Plotty;
 import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldguard.protection.databases.ProtectionDatabaseException;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.managers.storage.StorageException;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 public class PlotRegion {
 	public static Plotty plugin;
@@ -37,14 +36,14 @@ public class PlotRegion {
 					Flag f = (Flag)flag;
 					pcr.setFlag(f, obj);
 				}catch(Exception e1){
-					s.sendMessage("§4[Plotty] §cError in config: custom WorldGuard flag has incorrect value.");
+					s.sendMessage("ï¿½4[Plotty] ï¿½cError in config: custom WorldGuard flag has incorrect value.");
 				}
 			}
 		}
 		rm.addRegion(pcr);
 		try {
 			rm.save();
-		} catch (ProtectionDatabaseException e) {
+		} catch (StorageException e) {
 			e.printStackTrace();
 		}
 	}
@@ -55,7 +54,7 @@ public class PlotRegion {
 			rm.getRegion(name).getOwners().addPlayer(friend);
 			try {
 				rm.save();
-			} catch (ProtectionDatabaseException e) {
+			} catch (StorageException e) {
 				e.printStackTrace();
 			}
 			return true;
@@ -72,7 +71,7 @@ public class PlotRegion {
 			}
 			try {
 				rm.save();
-			} catch (ProtectionDatabaseException e) {
+			} catch (StorageException e) {
 				e.printStackTrace();
 			}
 			return true;

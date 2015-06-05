@@ -1,5 +1,9 @@
 package com.daviga404.data;
 
+import com.daviga404.Plotty;
+import com.daviga404.plots.Plot;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,13 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
-import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
-
-import com.daviga404.Plotty;
-import com.daviga404.plots.Plot;
 
 public class DataManager {
 	public File file;
