@@ -1,11 +1,11 @@
 package com.daviga404.commands.user;
 
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlot;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class CommandPlotList extends PlottyCommand{
 	private Plotty plugin;
@@ -22,18 +22,18 @@ public class CommandPlotList extends PlottyCommand{
 	}
 	public boolean execute(Player p, String[] args){
 		StringBuilder builder = new StringBuilder();
-		builder.append("§1[Plotty] Your Plots:\n");
+		builder.append(ChatColor.DARK_BLUE + "[Plotty] Your Plots:\n");
 		DataManager dm = plugin.getDataManager();
 		for(PlottyPlot plot : dm.getPlayer(p.getName()).plots){
-			builder.append("§b- Plot ");
+			builder.append(ChatColor.AQUA + "- Plot ");
 			builder.append(plot.id);
-			builder.append(" §9[x:");
+			builder.append(ChatColor.BLUE + " [x:");
 			builder.append(plot.x);
 			builder.append(", z:");
 			builder.append(plot.z);
 			builder.append(", w:");
 			builder.append(plot.world);
-			builder.append("] §b[Friends: ");
+			builder.append("] " + ChatColor.AQUA + "[Friends: ");
 			String friendsString="";
 			for(String s : plot.friends){
 				friendsString += s +", ";

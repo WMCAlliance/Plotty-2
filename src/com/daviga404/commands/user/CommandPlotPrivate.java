@@ -1,12 +1,11 @@
 package com.daviga404.commands.user;
 
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlayer;
 import com.daviga404.data.PlottyPlot;
+import org.bukkit.entity.Player;
 
 public class CommandPlotPrivate extends PlottyCommand{
 	private Plotty plugin;

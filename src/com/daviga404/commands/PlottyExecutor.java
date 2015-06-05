@@ -1,15 +1,5 @@
 package com.daviga404.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.admin.CommandPlotConfig;
 import com.daviga404.commands.admin.CommandPlotGrant;
@@ -28,6 +18,15 @@ import com.daviga404.commands.user.CommandPlotPublic;
 import com.daviga404.commands.user.CommandPlotTp;
 import com.daviga404.commands.user.CommandPlotUnfriend;
 import com.daviga404.commands.user.CommandPlotVote;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class PlottyExecutor implements CommandExecutor {
 	private ArrayList<PlottyCommand> cmds = new ArrayList<PlottyCommand>();
@@ -56,7 +55,7 @@ public class PlottyExecutor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
 		String base = args.length > 0 ? args[0] : "";
 		if(base.equalsIgnoreCase("")){
-			sender.sendMessage("§1Plotty v"+pl.getDescription().getVersion().toString()+" §bby Daviga404\n§9Type /plot ? for help.");
+			sender.sendMessage(ChatColor.DARK_BLUE + "Plotty v"+pl.getDescription().getVersion().toString()+" " + ChatColor.AQUA + "by Daviga404\n" + ChatColor.BLUE + "Type /plot ? for help.");
 			return true;
 		}
 		if(base.equalsIgnoreCase("?") || base.equalsIgnoreCase("help")){
@@ -97,22 +96,22 @@ public class PlottyExecutor implements CommandExecutor {
 		
 		if(matches.size() < 1){
 			if(basematches.size() < 1){
-				p.sendMessage("§c[Plotty] Unknown command. Type /plot ? for help.");
+				p.sendMessage(ChatColor.RED + "[Plotty] Unknown command. Type /plot ? for help.");
 			}else{
 				if(basematches.size() == 1){
-					p.sendMessage("§c[Plotty] Usage: "+basematches.get(0).usage);
+					p.sendMessage(ChatColor.RED + "[Plotty] Usage: "+basematches.get(0).usage);
 				}else{
-					p.sendMessage("§4[Plotty] Multiple possible matches for your command were found:");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] Multiple possible matches for your command were found:");
 					for(PlottyCommand match : basematches){
-						p.sendMessage("§c[Plotty] "+match.usage);
+						p.sendMessage(ChatColor.RED + "[Plotty] "+match.usage);
 					}
 				}
 			}
 			return true;
 		}else if(matches.size() > 1){
-			p.sendMessage("§4[Plotty] Multiple possible matches for your command were found:");
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] Multiple possible matches for your command were found:");
 			for(PlottyCommand match : matches){
-				p.sendMessage("§c[Plotty] "+match.usage);
+				p.sendMessage(ChatColor.RED + "[Plotty] "+match.usage);
 			}
 			return true;
 		}
@@ -120,7 +119,7 @@ public class PlottyExecutor implements CommandExecutor {
 		PlottyCommand cmd = matches.get(0);
 		
 		if(!(p.hasPermission(cmd.permission) || p.hasPermission("plotty.*") || p.isOp())){
-			p.sendMessage("§c[Plotty] You do not have access to this command.");
+			p.sendMessage(ChatColor.RED + "[Plotty] You do not have access to this command.");
 			return true;
 		}
 		
@@ -155,22 +154,22 @@ public class PlottyExecutor implements CommandExecutor {
 			pages.add(current);
 		}
 		if(page > pages.size()-1){
-			sender.sendMessage("§7Warning: page not found.");
-			sender.sendMessage("§1Plotty Help §b(Page 1/"+pages.size()+"):");
+			sender.sendMessage(ChatColor.GRAY + "Warning: page not found.");
+			sender.sendMessage(ChatColor.BLUE + "Plotty Help " + ChatColor.AQUA + "(Page 1/"+pages.size()+"):");
 			for(PlottyCommand com : pages.get(0)){
 				if(sender.hasPermission(com.permission) || sender.hasPermission("plotty.*") || sender.isOp()){
-					sender.sendMessage("§9"+com.usage+"§b - "+com.description);
+					sender.sendMessage(ChatColor.BLUE + com.usage + ChatColor.AQUA + " - " + com.description);
 				}else{
-					sender.sendMessage("§9§m"+com.usage+"§b§m - "+com.description);
+					sender.sendMessage(ChatColor.BLUE + "" + ChatColor.STRIKETHROUGH + com.usage + ChatColor.AQUA + "" + ChatColor.STRIKETHROUGH + " - " + com.description);
 				}
 			}
 		}else{
-			sender.sendMessage("§1Plotty Help §b(Page "+(page+1)+"/"+pages.size()+"):");
+			sender.sendMessage(ChatColor.DARK_BLUE + "Plotty Help " + ChatColor.AQUA + "(Page "+(page+1)+"/"+pages.size()+"):");
 			for(PlottyCommand com : pages.get(page)){
 				if(sender.hasPermission(com.permission) || sender.hasPermission("plotty.*") || sender.isOp()){
-					sender.sendMessage("§9"+com.usage+"§b - "+com.description);
+					sender.sendMessage(ChatColor.BLUE + com.usage + ChatColor.AQUA + " - "+com.description);
 				}else{
-					sender.sendMessage("§9§m"+com.usage+"§b§m - "+com.description);
+					sender.sendMessage(ChatColor.BLUE + "" + ChatColor.STRIKETHROUGH + com.usage+ ChatColor.AQUA + "" + ChatColor.STRIKETHROUGH + " - "+com.description);
 				}
 			}
 		}
@@ -198,14 +197,14 @@ public class PlottyExecutor implements CommandExecutor {
 		}
 		
 		if(page > (pages.size()-1)){
-			sender.sendMessage("§1Plotty Help §b(Page 1/"+pages.size()+"):");
+			sender.sendMessage("ï¿½1Plotty Help ï¿½b(Page 1/"+pages.size()+"):");
 			for(PlottyCommand com : pages.get(0)){
-				sender.sendMessage("§9"+com.usage+"§b - "+com.description);
+				sender.sendMessage("ï¿½9"+com.usage+"ï¿½b - "+com.description);
 			}
 		}else{
-			sender.sendMessage("§1Plotty Help §b(Page "+(page+1)+"/"+pages.size()+"):");
+			sender.sendMessage("ï¿½1Plotty Help ï¿½b(Page "+(page+1)+"/"+pages.size()+"):");
 			for(PlottyCommand com : pages.get(page)){
-				sender.sendMessage("§9"+com.usage+"§b - "+com.description);
+				sender.sendMessage("ï¿½9"+com.usage+"ï¿½b - "+com.description);
 			}
 		}*/
 	}
