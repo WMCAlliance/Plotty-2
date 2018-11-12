@@ -1,10 +1,10 @@
 package com.daviga404.commands.admin;
 
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.language.LangManager;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class CommandPlotReload extends PlottyCommand{
 	private Plotty plugin;
@@ -24,9 +24,9 @@ public class CommandPlotReload extends PlottyCommand{
 			plugin.dm.checkForFile();
 			plugin.langMan = new LangManager(plugin);
 			plugin.lang = plugin.langMan.getLang();
-			p.sendMessage("§a[Plotty] All configs reloaded!");
+			p.sendMessage(ChatColor.GREEN + "[Plotty] All configs reloaded!");
 		} catch (Exception e) {
-			p.sendMessage("§4[Plotty] §cAn error occurred while reloading. Check the console for errors.");
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] ï¿½cAn error occurred while reloading. Check the console for errors.");
 			e.printStackTrace();
 		}
 		return true;

@@ -1,13 +1,13 @@
 package com.daviga404.commands.user;
 
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlot;
 import com.daviga404.plots.Plot;
 import com.daviga404.plots.PlotDeleter;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class CommandPlotClear extends PlottyCommand{
 	
@@ -26,12 +26,12 @@ public class CommandPlotClear extends PlottyCommand{
 
 	public boolean execute(Player p, String[] args) {
 		if(!plugin.dm.config.clearEnabled){
-			p.sendMessage("§4[Plotty] §cClearing of plots is prohibited.");
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Clearing of plots is prohibited.");
 			return true;
 		}
 		DataManager dm = plugin.getDataManager();
 		if(PlotDeleter.isCooling(p.getName())){
-			p.sendMessage("§4[Plotty] §cYou cannot clear another plot for "+dm.config.delCooldown+" seconds.");
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "You cannot clear another plot for " + dm.config.delCooldown + " seconds.");
 			return true;
 		}
 		PlottyPlot plot = dm.getPlotFromId(Integer.parseInt(args[0]));

@@ -7,8 +7,8 @@ public class PlottyConfig {
 	public int plotSize;
 	public int plotHeight;
 	public int maxPlots;
-	public int baseBlock;
-	public int surfaceBlock;
+	public String baseBlock;
+	public String surfaceBlock;
 	public int delCooldown;
 	public boolean clearOnDelete;
 	public boolean clearEnabled=false;

@@ -1,12 +1,10 @@
 package com.daviga404.plots;
 
-import java.util.ArrayList;
-
-import org.bukkit.Location;
-import org.bukkit.World;
-
 import com.daviga404.Plotty;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import java.util.ArrayList;
+import org.bukkit.Location;
+import org.bukkit.World;
 
 public class PlotFinder {
 	public static Plot findPlot(World w, Plotty pl){ //THIS ALGORITHM FINALLY WORKS! Now to do other stuff *groan*

@@ -1,14 +1,14 @@
 package com.daviga404.commands.user;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlayer;
 import com.daviga404.data.PlottyPlot;
 import com.daviga404.plots.Plot;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class CommandPlotTp extends PlottyCommand{
 	private Plotty plugin;
@@ -32,7 +32,7 @@ public class CommandPlotTp extends PlottyCommand{
 				}
 			}
 		}
-		if(pl == null){p.sendMessage("§4[Plotty] §cPlot not found.");return true;}
+		if(pl == null){p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Plot not found.");return true;}
 		plugin.telePlayer(new Plot(pl.x,plugin.plotHeight,pl.z,Bukkit.getWorld(pl.world)), p);
 		p.sendMessage(plugin.lang.teleportedToPlot.replaceAll("%s", pl.id+""));
 		return true;

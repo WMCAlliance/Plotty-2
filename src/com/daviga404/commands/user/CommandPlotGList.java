@@ -1,18 +1,17 @@
 package com.daviga404.commands.user;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlayer;
 import com.daviga404.data.PlottyPlot;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.regex.Pattern;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class CommandPlotGList extends PlottyCommand{
 	private Plotty plugin;
@@ -69,33 +68,33 @@ public class CommandPlotGList extends PlottyCommand{
 				}
 			});
 		}
-		String title = "§1§l[Plotty] §9§lGlobal Plot List (ordered by "+(sortByTop ? "rank" : "ID")+"):\n";
+		String title = ChatColor.DARK_BLUE + "" + ChatColor.BOLD + "[Plotty] " + ChatColor.BLUE + "" + ChatColor.BOLD + "Global Plot List (ordered by " + (sortByTop ? "rank" : "ID") + "):\n";
 		if(sortByTop){
-			title += "§8§oFormat: [Rank] ID | Creator | (Votes)\n";
+			title += ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Format: [Rank] ID | Creator | (Votes)\n";
 		}else{
-			title += "§8§oFormat: [ID] Creator (Votes)\n";
+			title += ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Format: [ID] Creator (Votes)\n";
 		}
 		ArrayList<String> plotStrings = new ArrayList<String>();
 		for(PlottyPlot plot : plots){
 			if(sortByTop){
 				StringBuilder s = new StringBuilder();
-				s.append("§1- [");
+				s.append(ChatColor.DARK_BLUE).append("- [");
 				s.append(plots.indexOf(plot)+1);
-				s.append("] §9");
+				s.append("] ").append(ChatColor.BLUE);
 				s.append(plot.id);
 				s.append(" | ");
 				s.append(dm.getPlotOwner(plot) != null ? dm.getPlotOwner(plot) : "Unknown");
-				s.append(" §b(");
+				s.append(" ").append(ChatColor.AQUA).append("(");
 				s.append(plot.rank);
 				s.append(" votes)\n");
 				plotStrings.add(s.toString());
 			}else{
 				StringBuilder s = new StringBuilder();
-				s.append("§1- [");
+				s.append(ChatColor.DARK_BLUE).append("- [");
 				s.append(plot.id);
-				s.append("] §9");
+				s.append("] ").append(ChatColor.BLUE);
 				s.append(dm.getPlotOwner(plot) != null ? dm.getPlotOwner(plot) : "Unknown");
-				s.append(" | §b(");
+				s.append(" | ").append(ChatColor.AQUA).append("(");
 				s.append(plot.rank);
 				s.append(" votes)\n");
 				plotStrings.add(s.toString());
@@ -111,18 +110,18 @@ public class CommandPlotGList extends PlottyCommand{
 			}
 		}
 		if(pages.size() == 0){
-			p.sendMessage("§7No plots have been created.");
+			p.sendMessage(ChatColor.GRAY + "No plots have been created.");
 			return true;
 		}
 		if((page+1) > pages.size() || page < 0){
-			p.sendMessage("§7Warning: Page not in range. Using page 1 instead.");
+			p.sendMessage(ChatColor.GRAY + "Warning: Page not in range. Using page 1 instead.");
 			page = 0;
 		}
 		p.sendMessage(title);
 		for(String str : pages.get(page)){
 			p.sendMessage(str);
 		}
-		p.sendMessage("§1Page "+(page+1)+"/"+pages.size());
+		p.sendMessage(ChatColor.DARK_BLUE + "Page " + (page+1) + "/" + pages.size());
 		return true;
 	}
 }

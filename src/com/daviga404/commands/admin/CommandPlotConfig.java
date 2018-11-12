@@ -1,13 +1,12 @@
 package com.daviga404.commands.admin;
 
-import java.util.ArrayList;
-
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.PlottyConfig;
+import java.util.ArrayList;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 public class CommandPlotConfig extends PlottyCommand{
 	private Plotty plugin;
@@ -56,7 +55,7 @@ public class CommandPlotConfig extends PlottyCommand{
 			if(op.equalsIgnoreCase("publicbydefault")) return send("public by default",c.publicByDefault,p);
 			if(op.equalsIgnoreCase("enabletnt")) return send("enable tnt",c.enableTnt,p);
 			if(op.equalsIgnoreCase("votedelay")) return send("vote delay",c.voteDelay,p);
-			p.sendMessage("§4[Plotty] §cUnknown configuration value.");
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Unknown configuration value.");
 		}else if(args.length == 2){
 			System.out.println(args[0]+", "+args[1]);
 			String op = args[0];
@@ -66,101 +65,99 @@ public class CommandPlotConfig extends PlottyCommand{
 				try {
 					int i = Integer.parseInt(newval);
 					if(i <= 0){
-						p.sendMessage("§4[Plotty] §cValue must be a positive number above 0.");
+						p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a positive number above 0.");
 						return true;
 					}
 					c.plotSize = i;
 					plugin.dm.config = c;
 					plugin.dm.save();
-					p.sendMessage("§a[Plotty] Config option set!");
+					p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 					return true;
 				}catch(Exception e1){
-					p.sendMessage("§4[Plotty] §cValue must be a number.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a number.");
 					return true;
 				}
 			}else if(op.equalsIgnoreCase("plotheight")){
 				try {
 					int i = Integer.parseInt(newval);
 					if(i < 0){
-						p.sendMessage("§4[Plotty] §cValue must be a positive number.");
+						p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a positive number.");
 						return true;
 					}
 					c.plotHeight = i;
 					plugin.dm.config = c;
 					plugin.dm.save();
-					p.sendMessage("§a[Plotty] Config option set!");
+					p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 					return true;
 				}catch(Exception e1){
-					p.sendMessage("§4[Plotty] §cValue must be a number.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a number.");
 					return true;
 				}
 			}else if(op.equalsIgnoreCase("maxplots")){
 				try {
 					int i = Integer.parseInt(newval);
 					if(i < 0){
-						p.sendMessage("§4[Plotty] §cValue must be a positive number.");
+						p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a positive number.");
 						return true;
 					}
 					c.maxPlots = i;
 					plugin.dm.config = c;
 					plugin.dm.save();
-					p.sendMessage("§a[Plotty] Config option set!");
+					p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 					return true;
 				}catch(Exception e1){
-					p.sendMessage("§4[Plotty] §cValue must be a number.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a number.");
 					return true;
 				}
 			}else if(op.equalsIgnoreCase("baseblock")){
 				try {
-					int b = Integer.parseInt(newval);
-					if(Material.getMaterial(b) == null){
-						p.sendMessage("§4[Plotty] §cID must exist.");
+					if(Material.getMaterial(newval) == null){
+						p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "ID must exist.");
 						return true;
 					}
-					c.baseBlock = b;
+					c.baseBlock = newval;
 					plugin.dm.config = c;
 					plugin.dm.save();
-					p.sendMessage("§a[Plotty] Config option set!");
+					p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 					return true;
 				}catch(Exception e1){
-					p.sendMessage("§4[Plotty] §cValue must be a number.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a number.");
 					return true;
 				}
 			}else if(op.equalsIgnoreCase("surfaceblock")){
 				try {
-					int b = Integer.parseInt(newval);
-					if(Material.getMaterial(b) == null){
-						p.sendMessage("§4[Plotty] §cID must exist.");
+					if(Material.getMaterial(newval) == null){
+						p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "ID must exist.");
 						return true;
 					}
-					c.surfaceBlock = b;
+					c.surfaceBlock = newval;
 					plugin.dm.config = c;
 					plugin.dm.save();
-					p.sendMessage("§a[Plotty] Config option set!");
+					p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 					return true;
 				}catch(Exception e1){
-					p.sendMessage("§4[Plotty] §cValue must be a number.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a number.");
 					return true;
 				}
 			}else if(op.equalsIgnoreCase("delcooldown")){
 				try {
 					int i = Integer.parseInt(newval);
 					if(i < 0){
-						p.sendMessage("§4[Plotty] §cValue must be a positive number.");
+						p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a positive number.");
 						return true;
 					}
 					c.delCooldown = i;
 					plugin.dm.config = c;
 					plugin.dm.save();
-					p.sendMessage("§a[Plotty] Config option set!");
+					p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 					return true;
 				}catch(Exception e1){
-					p.sendMessage("§4[Plotty] §cValue must be a number.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a number.");
 					return true;
 				}
 			}else if(op.equalsIgnoreCase("clearondelete")){
 				if(!(newval.equalsIgnoreCase("true") || newval.equalsIgnoreCase("false"))){
-					p.sendMessage("§4[Plotty] §cValue must be 'true' or 'false'.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be 'true' or 'false'.");
 					return true;
 				}
 				boolean newvalb = false;
@@ -168,11 +165,11 @@ public class CommandPlotConfig extends PlottyCommand{
 				c.clearOnDelete = newvalb;
 				plugin.dm.config = c;
 				plugin.dm.save();
-				p.sendMessage("§a[Plotty] Config option set!");
+				p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 				return true;
 			}else if(op.equalsIgnoreCase("clearenabled")){
 				if(!(newval.equalsIgnoreCase("true") || newval.equalsIgnoreCase("false"))){
-					p.sendMessage("§4[Plotty] §cValue must be 'true' or 'false'.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be 'true' or 'false'.");
 					return true;
 				}
 				boolean newvalb = false;
@@ -180,11 +177,11 @@ public class CommandPlotConfig extends PlottyCommand{
 				c.clearEnabled = newvalb;
 				plugin.dm.config = c;
 				plugin.dm.save();
-				p.sendMessage("§a[Plotty] Config option set!");
+				p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 				return true;
 			}else if(op.equalsIgnoreCase("centertp")){
 				if(!(newval.equalsIgnoreCase("true") || newval.equalsIgnoreCase("false"))){
-					p.sendMessage("§4[Plotty] §cValue must be 'true' or 'false'.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be 'true' or 'false'.");
 					return true;
 				}
 				boolean newvalb = false;
@@ -192,11 +189,11 @@ public class CommandPlotConfig extends PlottyCommand{
 				c.centertp = newvalb;
 				plugin.dm.config = c;
 				plugin.dm.save();
-				p.sendMessage("§a[Plotty] Config option set!");
+				p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 				return true;
 			}else if(op.equalsIgnoreCase("publicbydefault")){
 				if(!(newval.equalsIgnoreCase("true") || newval.equalsIgnoreCase("false"))){
-					p.sendMessage("§4[Plotty] §cValue must be 'true' or 'false'.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be 'true' or 'false'.");
 					return true;
 				}
 				boolean newvalb = false;
@@ -204,11 +201,11 @@ public class CommandPlotConfig extends PlottyCommand{
 				c.publicByDefault = newvalb;
 				plugin.dm.config = c;
 				plugin.dm.save();
-				p.sendMessage("§a[Plotty] Config option set!");
+				p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 				return true;
 			}else if(op.equalsIgnoreCase("enabletnt")){
 				if(!(newval.equalsIgnoreCase("true") || newval.equalsIgnoreCase("false"))){
-					p.sendMessage("§4[Plotty] §cValue must be 'true' or 'false'.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be 'true' or 'false'.");
 					return true;
 				}
 				boolean newvalb = false;
@@ -216,36 +213,36 @@ public class CommandPlotConfig extends PlottyCommand{
 				c.enableTnt = newvalb;
 				plugin.dm.config = c;
 				plugin.dm.save();
-				p.sendMessage("§a[Plotty] Config option set!");
+				p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 				return true;
 			}else if(op.equalsIgnoreCase("votedelay")){
 				try {
 					double d = Double.parseDouble(newval);
 					if(d < 0.0){
-						p.sendMessage("§4[Plotty] §cValue must be above 0.");
+						p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be above 0.");
 						return true;
 					}
 					c.voteDelay = d;
 					plugin.dm.config = c;
 					plugin.dm.save();
-					p.sendMessage("§a[Plotty] Config option set!");
+					p.sendMessage(ChatColor.GREEN + "[Plotty] Config option set!");
 					return true;
 				}catch(Exception e1){
-					p.sendMessage("§4[Plotty] §cValue must be a decimal (e.g 5.0 or 6.1).");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Value must be a decimal (e.g 5.0 or 6.1).");
 					return true;
 				}
 			}else{
-				p.sendMessage("§4[Plotty] §cConfig option not found.");
+				p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Config option not found.");
 				return true;
 			}
 		}else if(args.length == 3 && args[0].equalsIgnoreCase("worlds") && args[1].equalsIgnoreCase("add")){
 			if(plugin.getServer().getWorld(args[2]) == null){
-				p.sendMessage("§4[Plotty] §cWorld not found.");
+				p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "World not found.");
 				return true;
 			}
 			for(String world : c.worlds){
 				if(world.equalsIgnoreCase(args[2])){
-					p.sendMessage("§4[Plotty] §cWorld is already in config.");
+					p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "World is already in config.");
 					return true;
 				}
 			}
@@ -255,7 +252,7 @@ public class CommandPlotConfig extends PlottyCommand{
 			c.worlds = newWorlds;
 			plugin.dm.config = c;
 			plugin.dm.save();
-			p.sendMessage("§a[Plotty] World added to config.");
+			p.sendMessage(ChatColor.GREEN + "[Plotty] World added to config.");
 			return true;
 		}else if(args.length == 3 && args[0].equalsIgnoreCase("worlds") && args[1].equalsIgnoreCase("remove")){
 			ArrayList<String> newWorlds = new ArrayList<String>();
@@ -268,7 +265,7 @@ public class CommandPlotConfig extends PlottyCommand{
 				}
 			}
 			if(!found){
-				p.sendMessage("§4[Plotty] §cWorld not found in config.");
+				p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "World not found in config.");
 				return true;
 			}
 			String[] newWorldsArray = new String[newWorlds.size()];
@@ -280,37 +277,37 @@ public class CommandPlotConfig extends PlottyCommand{
 			c.worlds = newWorldsArray;
 			plugin.dm.config = c;
 			plugin.dm.save();
-			p.sendMessage("§a[Plotty] World removed from config.");
+			p.sendMessage(ChatColor.GREEN + "[Plotty] World removed from config.");
 			return true;
 		}else{
 			StringBuilder b = new StringBuilder();
-			b.append("§1[Plotty] §9Config Values:\n");
-			b.append("§9plotSize: §b");
+			b.append(ChatColor.DARK_BLUE + "[Plotty] " + ChatColor.BLUE + "Config Values:\n");
+			b.append(ChatColor.BLUE + "plotSize: " + ChatColor.AQUA);
 			b.append(c.plotSize);
-			b.append("\n§9plotHeight: §b");
+			b.append("\n" + ChatColor.BLUE + "plotHeight: " + ChatColor.AQUA);
 			b.append(c.plotHeight);
-			b.append("\n§9maxPlots: §b");
+			b.append("\n" + ChatColor.BLUE + "maxPlots: " + ChatColor.AQUA);
 			b.append(c.maxPlots);
-			b.append("\n§9baseBlock: §b");
+			b.append("\n" + ChatColor.BLUE + "baseBlock: " + ChatColor.AQUA);
 			b.append(c.baseBlock);
-			b.append("\n§9surfaceBlock: §b");
+			b.append("\n" + ChatColor.BLUE + "surfaceBlock: " + ChatColor.AQUA);
 			b.append(c.surfaceBlock);
-			b.append("\n§9delCooldown: §b");
+			b.append("\n" + ChatColor.BLUE + "delCooldown: " + ChatColor.AQUA);
 			b.append(c.delCooldown+"s");
-			b.append("\n§9clearOnDelete: §b");
+			b.append("\n" + ChatColor.BLUE + "clearOnDelete: " + ChatColor.AQUA);
 			b.append(c.clearOnDelete ? "yes" : "no");
-			b.append("\n§9clearEnabled: §b");
+			b.append("\n" + ChatColor.BLUE + "clearEnabled: " + ChatColor.AQUA);
 			b.append(c.clearEnabled ? "yes" : "no");
-			b.append("\n§9worlds: §b");
+			b.append("\n" + ChatColor.BLUE + "worlds: " + ChatColor.AQUA);
 			String s="";for(String ss:c.worlds){s+=ss+", ";}s = s.substring(0,s.length()-2);
 			b.append(s);
-			b.append("\n§9centertp: §b");
+			b.append("\n" + ChatColor.BLUE + "centertp: " + ChatColor.AQUA);
 			b.append(c.centertp ? "yes" : "no");
-			b.append("\n§9publicByDefault: §b");
+			b.append("\n" + ChatColor.BLUE + "publicByDefault: " + ChatColor.AQUA);
 			b.append(c.publicByDefault ? "yes" : "no");
-			b.append("\n§9enableTnt: §b");
+			b.append("\n" + ChatColor.BLUE + "enableTnt: " + ChatColor.AQUA);
 			b.append(c.enableTnt ? "yes" : "no");
-			b.append("\n§9voteDelay: §b");
+			b.append("\n" + ChatColor.BLUE + "voteDelay: " + ChatColor.AQUA);
 			b.append(c.voteDelay);
 			p.sendMessage(b.toString());
 		}
@@ -334,7 +331,7 @@ public class CommandPlotConfig extends PlottyCommand{
 		}else if(value instanceof Integer){
 			value = String.valueOf(value);
 		}
-		p.sendMessage("§1[Plotty] §9Current "+name+": §b"+((String)value));
+		p.sendMessage(ChatColor.DARK_BLUE + "[Plotty] " + ChatColor.BLUE + "Current "+name+": " + ChatColor.AQUA +((String)value));
 		return true;
 	}
 }

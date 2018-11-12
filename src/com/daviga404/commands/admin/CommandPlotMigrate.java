@@ -1,15 +1,14 @@
 package com.daviga404.commands.admin;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.plots.Plot;
 import com.daviga404.plots.PlotRegion;
+import java.io.File;
+import java.util.ArrayList;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 public class CommandPlotMigrate extends PlottyCommand{
 	private Plotty plugin;
@@ -33,7 +32,7 @@ public class CommandPlotMigrate extends PlottyCommand{
 		File dir = new File(plugin.getDataFolder()+File.separator+"userdata");
 		File mainConfigFile = new File(plugin.getDataFolder()+File.separator+"config.yml");
 		if(!dir.exists() || !mainConfigFile.exists()){
-			p.sendMessage("§4[Plotty] §cConfigs not found.");
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Configs not found.");
 			return true;
 		}
 		YamlConfiguration mainConfig = YamlConfiguration.loadConfiguration(mainConfigFile);
@@ -64,7 +63,7 @@ public class CommandPlotMigrate extends PlottyCommand{
 			}
 		}
 		log(count+" plots migrated to Plotty v2.");
-		p.sendMessage("§a[Plotty] "+count+" plots migrated to Plotty v2.");
+		p.sendMessage(ChatColor.GREEN + "[Plotty] " + count + " plots migrated to Plotty v2.");
 		return true;
 	}
 }

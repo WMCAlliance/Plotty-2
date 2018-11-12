@@ -1,16 +1,15 @@
 package com.daviga404.commands.user;
 
-import java.util.Calendar;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlayer;
 import com.daviga404.data.PlottyPlot;
 import com.daviga404.plots.PlotFinder;
+import java.util.Calendar;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class CommandPlotVote extends PlottyCommand{
 	private Plotty plugin;
@@ -44,14 +43,14 @@ public class CommandPlotVote extends PlottyCommand{
 				return true;
 			}
 			if(!plot.visible){
-				p.sendMessage("§4[Plotty] §cThis plot is private.");
+				p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "This plot is private.");
 				return true;
 			}
 			plot.rank = plot.rank+1;
-			if(dm.getPlotOwner(plot) == null || dm.getPlayer(dm.getPlotOwner(plot)) == null){p.sendMessage("§4ERROR: §cOwner's playerdata not found.");return true;}
+			if(dm.getPlotOwner(plot) == null || dm.getPlayer(dm.getPlotOwner(plot)) == null){p.sendMessage(ChatColor.DARK_RED + "ERROR: " + ChatColor.RED + "Owner's playerdata not found.");return true;}
 			PlottyPlayer owner = dm.getPlayer(dm.getPlotOwner(plot));
 			if(owner.name.equalsIgnoreCase(player.name)){
-				p.sendMessage("§4[Plotty] §cYou can't vote for your own plot!");
+				p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "You can't vote for your own plot!");
 				return true;
 			}
 			owner.plots[dm.plotIndex(plot.id, owner)] = plot;

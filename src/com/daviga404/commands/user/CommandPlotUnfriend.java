@@ -1,14 +1,14 @@
 package com.daviga404.commands.user;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlayer;
 import com.daviga404.data.PlottyPlot;
 import com.daviga404.plots.PlotRegion;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class CommandPlotUnfriend extends PlottyCommand{
 	private Plotty plugin;
@@ -45,7 +45,7 @@ public class CommandPlotUnfriend extends PlottyCommand{
 		dm.removeFriend(plot,p.getName(),args[0]);
 		//Remove friend from WG
 		if(!PlotRegion.removeFriend(plot.id,p.getName(),args[0],Bukkit.getWorld(plot.world))){
-			p.sendMessage("§4[Plotty] §cUnexpected error: region not found.");
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Unexpected error: region not found.");
 			return true;
 		}
 		p.sendMessage(plugin.lang.friendRemoved);

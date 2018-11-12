@@ -20,7 +20,7 @@ public class DataManager {
 	public PlottyConfig config,defaultConfig;
 	public DataManager(Plotty plugin){
 		defaultConfig = new PlottyConfig();
-		defaultConfig.baseBlock = 1;
+		defaultConfig.baseBlock = "STONE";
 		defaultConfig.centertp = true;
 		defaultConfig.clearEnabled = false;
 		defaultConfig.clearOnDelete = true;
@@ -34,7 +34,7 @@ public class DataManager {
 		defaultConfig.plotHeight = 20;
 		defaultConfig.plotSize = 64;
 		defaultConfig.publicByDefault = true;
-		defaultConfig.surfaceBlock = 2;
+		defaultConfig.surfaceBlock = "GRASS";
 		defaultConfig.voteDelay = 12.0;
 		defaultConfig.worlds = new String[]{};
 		defaultConfig.flags = new HashMap<String,String>();

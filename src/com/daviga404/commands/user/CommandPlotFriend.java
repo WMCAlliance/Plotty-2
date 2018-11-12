@@ -1,14 +1,14 @@
 package com.daviga404.commands.user;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlayer;
 import com.daviga404.data.PlottyPlot;
 import com.daviga404.plots.PlotRegion;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class CommandPlotFriend extends PlottyCommand{
 	private Plotty plugin;
@@ -41,14 +41,14 @@ public class CommandPlotFriend extends PlottyCommand{
 		}
 		//Check if friend is owner
 		if(dm.getPlotOwner(plot) != null && dm.getPlotOwner(plot).equalsIgnoreCase(args[0])){
-			p.sendMessage("§4[Plotty] §cWhy would you want to add yourself as a friend?");
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Why would you want to add yourself as a friend?");
 			return true;
 		}
 		//Add as a friend in plots.json
 		dm.addFriend(plot,p.getName(),args[0]);
 		//Add as owner (WG)
 		if(!PlotRegion.addFriend(plot.id, p.getName(), args[0], Bukkit.getWorld(plot.world))){
-			p.sendMessage("§4[Plotty] §cUnexpected error: region not found.");
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Unexpected error: region not found.");
 			return true;
 		}
 		p.sendMessage(plugin.lang.friendAdded);
