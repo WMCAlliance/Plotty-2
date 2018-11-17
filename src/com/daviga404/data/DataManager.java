@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 
 public class DataManager {
 	public File file;
@@ -21,7 +20,7 @@ public class DataManager {
 	public PlottyConfig config,defaultConfig;
 	public DataManager(Plotty plugin){
 		defaultConfig = new PlottyConfig();
-		defaultConfig.baseBlock = Material.LEGACY_STONE.toString();
+		defaultConfig.baseBlock = "STONE";
 		defaultConfig.centertp = true;
 		defaultConfig.clearEnabled = false;
 		defaultConfig.clearOnDelete = true;
@@ -35,7 +34,7 @@ public class DataManager {
 		defaultConfig.plotHeight = 20;
 		defaultConfig.plotSize = 64;
 		defaultConfig.publicByDefault = true;
-		defaultConfig.surfaceBlock = Material.LEGACY_GRASS.toString();
+		defaultConfig.surfaceBlock = "GRASS";
 		defaultConfig.voteDelay = 12.0;
 		defaultConfig.worlds = new String[]{};
 		defaultConfig.flags = new HashMap<String,String>();
