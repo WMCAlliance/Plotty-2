@@ -118,28 +118,28 @@ public class LangManager {
 		}catch(Exception e1){
 			e1.printStackTrace();
 		}
-		ChatColor.translateAlternateColorCodes(amp, language.alreadyFriend);
-		ChatColor.translateAlternateColorCodes(amp, language.cantVote);
-		ChatColor.translateAlternateColorCodes(amp, language.createdPlot);
-		ChatColor.translateAlternateColorCodes(amp, language.dontOwn);
-		ChatColor.translateAlternateColorCodes(amp, language.friendAdded);
-		ChatColor.translateAlternateColorCodes(amp, language.friendNotFound);
-		ChatColor.translateAlternateColorCodes(amp, language.friendRemoved);
-		ChatColor.translateAlternateColorCodes(amp, language.madePrivate);
-		ChatColor.translateAlternateColorCodes(amp, language.madePublic);
-		ChatColor.translateAlternateColorCodes(amp, language.moneyTaken);
-		ChatColor.translateAlternateColorCodes(amp, language.mustBeInPlotsWorld);
-		ChatColor.translateAlternateColorCodes(amp, language.mustBePlayer);
-		ChatColor.translateAlternateColorCodes(amp, language.noMoney);
-		ChatColor.translateAlternateColorCodes(amp, language.notFound);
-		ChatColor.translateAlternateColorCodes(amp, language.notStandingInPlot);
-		ChatColor.translateAlternateColorCodes(amp, language.plotClaimed);
-		ChatColor.translateAlternateColorCodes(amp, language.plotCleared);
-		ChatColor.translateAlternateColorCodes(amp, language.plotDeleted);
-		ChatColor.translateAlternateColorCodes(amp, language.plotFree);
-		ChatColor.translateAlternateColorCodes(amp, language.plotHere);
-		ChatColor.translateAlternateColorCodes(amp, language.reachedMaxPlots);
-		ChatColor.translateAlternateColorCodes(amp, language.teleportedToPlot);
+		language.alreadyFriend = ChatColor.translateAlternateColorCodes(amp, language.alreadyFriend);
+		language.cantVote = ChatColor.translateAlternateColorCodes(amp, language.cantVote);
+		language.createdPlot = ChatColor.translateAlternateColorCodes(amp, language.createdPlot);
+		language.dontOwn = ChatColor.translateAlternateColorCodes(amp, language.dontOwn);
+		language.friendAdded = ChatColor.translateAlternateColorCodes(amp, language.friendAdded);
+		language.friendNotFound = ChatColor.translateAlternateColorCodes(amp, language.friendNotFound);
+		language.friendRemoved = ChatColor.translateAlternateColorCodes(amp, language.friendRemoved);
+		language.madePrivate = ChatColor.translateAlternateColorCodes(amp, language.madePrivate);
+		language.madePublic = ChatColor.translateAlternateColorCodes(amp, language.madePublic);
+		language.moneyTaken = ChatColor.translateAlternateColorCodes(amp, language.moneyTaken);
+		language.mustBeInPlotsWorld = ChatColor.translateAlternateColorCodes(amp, language.mustBeInPlotsWorld);
+		language.mustBePlayer = ChatColor.translateAlternateColorCodes(amp, language.mustBePlayer);
+		language.noMoney = ChatColor.translateAlternateColorCodes(amp, language.noMoney);
+		language.notFound = ChatColor.translateAlternateColorCodes(amp, language.notFound);
+		language.notStandingInPlot = ChatColor.translateAlternateColorCodes(amp, language.notStandingInPlot);
+		language.plotClaimed = ChatColor.translateAlternateColorCodes(amp, language.plotClaimed);
+		language.plotCleared = ChatColor.translateAlternateColorCodes(amp, language.plotCleared);
+		language.plotDeleted = ChatColor.translateAlternateColorCodes(amp, language.plotDeleted);
+		language.plotFree = ChatColor.translateAlternateColorCodes(amp, language.plotFree);
+		language.plotHere = ChatColor.translateAlternateColorCodes(amp, language.plotHere);
+		language.reachedMaxPlots = ChatColor.translateAlternateColorCodes(amp, language.reachedMaxPlots);
+		language.teleportedToPlot = ChatColor.translateAlternateColorCodes(amp, language.teleportedToPlot);
 	}
 	public Lang getLang(){
 		return language;
