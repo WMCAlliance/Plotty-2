@@ -26,9 +26,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-public class PlottyExecutor implements CommandExecutor {
+public class PlottyExecutor implements CommandExecutor, TabExecutor {
 	private ArrayList<PlottyCommand> cmds = new ArrayList<PlottyCommand>();
 	private Plotty pl;
 	public PlottyExecutor(Plotty pl){
@@ -51,6 +52,20 @@ public class PlottyExecutor implements CommandExecutor {
 		cmds.add(new CommandPlotReload(pl));
 		cmds.add(new CommandPlotMigrate(pl));
 		cmds.add(new CommandPlotGrant(pl));
+	}
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (args.length == 1) {
+			String base = args.length > 0 ? args[0] : "";
+			ArrayList<String> matches = new ArrayList<>();
+			for(PlottyCommand cmd : cmds){
+				if(cmd.base.startsWith(base)){
+					matches.add(cmd.base);
+				}
+			}
+			return matches;
+		}
+		return new ArrayList<>();
 	}
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
 		String base = args.length > 0 ? args[0] : "";
