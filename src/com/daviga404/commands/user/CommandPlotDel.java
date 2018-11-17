@@ -6,7 +6,10 @@ import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlot;
 import com.daviga404.plots.Plot;
 import com.daviga404.plots.PlotDeleter;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -49,7 +52,8 @@ public class CommandPlotDel extends PlottyCommand{
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Error while removing plot (contact daviga404 on Bukkit to report)");
 			return true;
 		}
-		RegionManager rm = plugin.worldGuard.getRegionManager(p.getWorld());
+		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+		RegionManager rm = container.get(BukkitAdapter.adapt(p.getWorld()));
 		if(rm.hasRegion("plot_"+p.getName().toLowerCase()+"_"+plot.id)){
 			rm.removeRegion("plot_"+p.getName().toLowerCase()+"_"+plot.id);
 		}else{

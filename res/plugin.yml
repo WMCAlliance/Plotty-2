@@ -1,5 +1,5 @@
 name: Plotty
-version: 3.0
+version: 2.2
 main: com.daviga404.Plotty
 authors: [Daviga404, The Worldwide Minecraft Alliance]
 softdepend: [WorldEdit, WorldGuard]

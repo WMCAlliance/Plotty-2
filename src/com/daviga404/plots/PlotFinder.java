@@ -1,7 +1,10 @@
 package com.daviga404.plots;
 
 import com.daviga404.Plotty;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import java.util.ArrayList;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,7 +16,8 @@ public class PlotFinder {
 		int radius=1;
 		boolean found=false;
 		Plot plot = null;
-		RegionManager rm = pl.worldGuard.getRegionManager(w);
+		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+		RegionManager rm = container.get(BukkitAdapter.adapt(w));
 		while(!found){
 			int x = 4;
 			int z = 4;
@@ -30,7 +34,7 @@ public class PlotFinder {
 						int cym = cy * (size+7);
 						ccx = x + cxm;
 						ccy = z + cym;
-						boolean prot = rm.getApplicableRegions(new Location(w,ccx,height,ccy)).size() > 0;
+						boolean prot = rm.getApplicableRegions(BukkitAdapter.adapt(new Location(w,ccx,height,ccy)).toVector()).size() > 0;
 						if(!prot){
 							found = true;
 							plot = new Plot(ccx,height+1,ccy,w);

@@ -5,8 +5,11 @@ import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlot;
 import com.daviga404.plots.PlotFinder;
-import com.sk89q.worldguard.bukkit.BukkitPlayer;
-import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -23,6 +26,11 @@ public class CommandPlotInfo extends PlottyCommand{
 		);
 		this.plugin = pl;
 	}
+	public boolean canBuild(Player p, Location l) {
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+        com.sk89q.worldedit.util.Location loc = BukkitAdapter.adapt(l);
+        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(p), Flags.BUILD);
+    }
 	public boolean execute(Player p, String[] args){
 		Location l = p.getLocation();
 		int x = l.getBlockX();
@@ -50,8 +58,7 @@ public class CommandPlotInfo extends PlottyCommand{
 		plotInfo.append("\n").append(ChatColor.BLUE).append("- ID: ").append(ChatColor.AQUA);
 		plotInfo.append(plot.id);
 		plotInfo.append("\n").append(ChatColor.BLUE).append("- Can you build: ").append(ChatColor.AQUA);
-		RegionManager rm = plugin.worldGuard.getRegionManager(p.getWorld());
-		boolean canBuild = rm.getApplicableRegions(l).canBuild(new BukkitPlayer(plugin.worldGuard,p));
+		boolean canBuild = this.canBuild(p, l);
 		if(canBuild){
 			plotInfo.append("yes!");
 		}else{

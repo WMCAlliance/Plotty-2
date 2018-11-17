@@ -74,5 +74,7 @@
         <maven.build.timestamp.format>yyyyMMdd.kkmmss</maven.build.timestamp.format>
         <BUILD_NUMBER>local-${maven.build.timestamp}</BUILD_NUMBER>
         <pluginversion>${project.version}-${BUILD_NUMBER}</pluginversion>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 </project>

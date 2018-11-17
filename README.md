@@ -1,5 +1,6 @@
-Plotty2
+Plotty 2
 =======
 
-This is the repository for the Bukkit plot management plugin that I created called Plotty v2.
-It can be found on BukkitDev here: http://dev.bukkit.org/server-mods/Plotty-2/
+This is an up-to-date, maintained fork of Plotty 2. 2.2 builds and higher support WorldGuard 7 on Spigot 1.12 and above.
+
+Current versions do not support custom flag definitions in the Plotty config. If you already have some defined, please post your configuration!
