@@ -210,14 +210,14 @@ public class PlottyExecutor implements CommandExecutor, TabExecutor {
 		}
 		
 		if(page > (pages.size()-1)){
-			sender.sendMessage("�1Plotty Help �b(Page 1/"+pages.size()+"):");
+			sender.sendMessage(ChatColor.DARK_BLUE + "Plotty Help " + ChatColor.AQUA + "(Page 1/"+pages.size()+"):");
 			for(PlottyCommand com : pages.get(0)){
-				sender.sendMessage("�9"+com.usage+"�b - "+com.description);
+				sender.sendMessage(ChatColor.BLUE +com.usage+" + ChatColor.AQUA + " - "+com.description);
 			}
 		}else{
-			sender.sendMessage("�1Plotty Help �b(Page "+(page+1)+"/"+pages.size()+"):");
+			sender.sendMessage(ChatColor.DARK_BLUE + "Plotty Help " + ChatColor.AQUA + "(Page "+(page+1)+"/"+pages.size()+"):");
 			for(PlottyCommand com : pages.get(page)){
-				sender.sendMessage("�9"+com.usage+"�b - "+com.description);
+				sender.sendMessage(ChatColor.BLUE +com.usage+" + ChatColor.AQUA + " - "+com.description);
 			}
 		}*/
 	}

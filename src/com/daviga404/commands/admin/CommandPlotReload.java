@@ -26,7 +26,7 @@ public class CommandPlotReload extends PlottyCommand{
 			plugin.lang = plugin.langMan.getLang();
 			p.sendMessage(ChatColor.GREEN + "[Plotty] All configs reloaded!");
 		} catch (Exception e) {
-			p.sendMessage(ChatColor.DARK_RED + "[Plotty] �cAn error occurred while reloading. Check the console for errors.");
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "An error occurred while reloading. Check the console for errors.");
 			e.printStackTrace();
 		}
 		return true;
