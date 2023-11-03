@@ -35,7 +35,7 @@ public class CommandPlotNew extends PlottyCommand {
 		String result = plugin.makePlot(id, x, y, z, w, p, claiming);
 		p.sendMessage(result);
 		//}else{
-		//	p.sendMessage("§4[Plotty] §cYou must be in a world generated with InfinitePlots to do this!");
+		//	p.sendMessage("&4[Plotty] &cYou must be in a world generated with InfinitePlots to do this!");
 		//}
 		return true;
 	}

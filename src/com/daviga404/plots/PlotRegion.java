@@ -1,8 +1,8 @@
 package com.daviga404.plots;
 
 import com.daviga404.Plotty;
-import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.util.BlockVector;
 
 public class PlotRegion {
 	public static Plotty plugin;
@@ -24,11 +25,11 @@ public class PlotRegion {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void makePlotRegion(Plot p,String owner,int id){
 		String name = "plot_"+owner.toLowerCase()+"_"+id;
-		BlockVector point1 = new BlockVector(p.getX(),0,p.getZ());
-		BlockVector point2 = new BlockVector(p.getX()+plugin.plotSize,256,p.getZ()+plugin.plotSize);
+		BlockVector3 point1 = BlockVector3.at(p.getX(),0,p.getZ());
+		BlockVector3 point2 = BlockVector3.at(p.getX()+plugin.plotSize,256,p.getZ()+plugin.plotSize);
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager rm = container.get(BukkitAdapter.adapt(p.getWorld()));
-		ProtectedCuboidRegion pcr = new ProtectedCuboidRegion(name, point1,point2);
+		ProtectedCuboidRegion pcr = new ProtectedCuboidRegion(name, point1, point2);
 		pcr.getOwners().addPlayer(owner);
 		if(!plugin.getDataManager().config.enableTnt){
 			pcr.setFlag(Flags.TNT,State.DENY);

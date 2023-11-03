@@ -2,6 +2,7 @@ package com.daviga404.plots;
 
 import com.daviga404.Plotty;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
@@ -34,7 +35,9 @@ public class PlotFinder {
 						int cym = cy * (size+7);
 						ccx = x + cxm;
 						ccy = z + cym;
-						boolean prot = rm.getApplicableRegions(BukkitAdapter.adapt(new Location(w,ccx,height,ccy)).toVector()).size() > 0;
+						Location loc = new Location(w,ccx,height,ccy);
+						final BlockVector3 vec = BlockVector3.at(loc.getX(), loc.getY(), loc.getZ());
+						boolean prot = rm.getApplicableRegions(vec).size() > 0;
 						if(!prot){
 							found = true;
 							plot = new Plot(ccx,height+1,ccy,w);
