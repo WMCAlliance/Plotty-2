@@ -73,6 +73,7 @@ public class DataManager {
 			out.flush();
 			config = defaultConfig;
 			Bukkit.getLogger().info("Created default plots file (plugins/Plotty/plots.json)");
+			out.close();
 		}else{
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 			String ln,buff="";
@@ -81,6 +82,7 @@ public class DataManager {
 			}
 			config = gson.fromJson(buff, PlottyConfig.class);
 			Bukkit.getLogger().info("Plotty data loaded.");
+			br.close();
 		}
 		checkDefaults();
 	}
@@ -309,6 +311,7 @@ public class DataManager {
 		FileWriter out = new FileWriter(file);
 		out.write(gson.toJson(config));
 		out.flush();
+		out.close();
 		}catch(Exception e){
 			Bukkit.getLogger().severe("IOException: "+e.getMessage()+" ("+e.toString()+")");
 		}

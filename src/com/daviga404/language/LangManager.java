@@ -115,6 +115,7 @@ public class LangManager {
 			FileWriter fw = new FileWriter(file);
 			fw.write(gson.toJson(language,Lang.class));
 			fw.flush();
+			fw.close();
 		}catch(Exception e1){
 			e1.printStackTrace();
 		}
