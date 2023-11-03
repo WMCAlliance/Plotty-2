@@ -25,7 +25,11 @@ public class CommandPlotUnfriend extends PlottyCommand{
 	public boolean execute(Player p, String[] args){
 		//Check if player has plot
 		DataManager dm = plugin.getDataManager();
-		PlottyPlayer pp = dm.getPlayer(p);
+		PlottyPlayer pp = dm.getPlayer(p.getUniqueId());
+		if (pp == null) {
+			p.sendMessage(plugin.lang.noPlots);
+			return true;
+		}
 		PlottyPlot plot=null;
 		for(PlottyPlot pplot : pp.plots){
 			if(pplot.id == Integer.parseInt(args[1])){

@@ -51,11 +51,12 @@ public class CommandPlotInfo extends PlottyCommand{
 		plotInfo.append(ChatColor.DARK_BLUE).append("[Plotty] Plot Info:\n");
 		plotInfo.append(ChatColor.BLUE).append("- Owner: ").append(ChatColor.AQUA);
 		UUID owner = dm.getPlotOwner(plot);
-		if(owner == null){
-			plotInfo.append("unknown");
-		}else{
-			plotInfo.append(plugin.getServer().getOfflinePlayer(owner).getName());
+		String plotOwnerName = "Unknown";
+		if (owner != null) {
+			plotOwnerName = plugin.getServer().getOfflinePlayer(owner).getName();
+			if (plotOwnerName == null) plotOwnerName = dm.getPlayer(owner).name;
 		}
+		plotInfo.append(plotOwnerName);
 		plotInfo.append("\n").append(ChatColor.BLUE).append("- ID: ").append(ChatColor.AQUA);
 		plotInfo.append(plot.id);
 		plotInfo.append("\n").append(ChatColor.BLUE).append("- Can you build: ").append(ChatColor.AQUA);

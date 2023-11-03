@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -32,7 +34,8 @@ public class DataManager {
 		defaultConfig.enableTnt = false;
 		defaultConfig.maxPlots = 5;
 		defaultConfig.playerGrantNotify = new UUID[]{};
-		defaultConfig.players = new PlottyPlayer[]{};
+		defaultConfig.players = new PlottyPlayer[] {};
+		defaultConfig.playerPlots = new HashMap<UUID, PlottyPlayer>();
 		defaultConfig.plotCost = 0.0;
 		defaultConfig.plotHeight = 20;
 		defaultConfig.plotSize = 64;
@@ -67,12 +70,12 @@ public class DataManager {
 		gson = new GsonBuilder().setPrettyPrinting().create();
 		if(!file.exists()){
 			file.createNewFile();
-			Bukkit.getLogger().info("Creating default plots file...");
+			Bukkit.getLogger().info("[Plotty] Creating default plots file...");
 			FileWriter out = new FileWriter(file);
 			out.write(gson.toJson(defaultConfig));
 			out.flush();
 			config = defaultConfig;
-			Bukkit.getLogger().info("Created default plots file (plugins/Plotty/plots.json)");
+			Bukkit.getLogger().info("[Plotty] Created default plots file (plugins/Plotty/plots.json)");
 			out.close();
 		}else{
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
@@ -81,10 +84,33 @@ public class DataManager {
 				buff += ln;
 			}
 			config = gson.fromJson(buff, PlottyConfig.class);
-			Bukkit.getLogger().info("Plotty data loaded.");
+			Bukkit.getLogger().info("[Plotty] Plotty data loaded.");
 			br.close();
 		}
+		migratePlayers();
 		checkDefaults();
+	}
+
+	public void migratePlayers() {
+		if (config.players == null) return;
+		if (config.players.length == 0 || !config.playerPlots.isEmpty()) return;
+
+		Logger l = plugin.getServer().getLogger();
+		l.log(Level.INFO, "[Plotty] Migrating player files for significantly better performance.");
+		for (PlottyPlayer pp : config.players) {
+			if (pp.uuid == null || pp.uuid.toString().isEmpty()) {
+				plugin.getServer().getLogger().log(Level.INFO, "[Plotty] Failed to migrate player {0}. Missing UUID.", pp.name);
+				continue;
+			}
+			config.playerPlots.put(pp.uuid, pp);
+		}
+		if (config.players.length == config.playerPlots.size()) {
+			l.log(Level.INFO, "[Plotty] Successfully migrated all {0} players.", config.playerPlots.size());
+			config.players = new PlottyPlayer[]{};
+		} else {
+			l.warning("[Plotty] Not all Plotty players were migrated. The config will remain untouched, but unmigrated player's plots will not function correctly until you manually edit the config to migrate them.");
+		}
+		save();
 	}
 	/**
 	 * Adds a plot to the config file and saves.
@@ -103,9 +129,9 @@ public class DataManager {
 		plot.z = p.getZ();
 		plot.visible = config.publicByDefault;
 		player.plots = pushPlottyPlot(player.plots, plot);
-		
-		config.players[pIndex(owner)] = player;
-		
+
+		config.playerPlots.put(owner, player);
+
 		save();
 	}
 	/**
@@ -126,8 +152,7 @@ public class DataManager {
 			}
 		}
 		p.plots = newArray;
-		if(pIndex(p.uuid) == -1) return false;
-		config.players[pIndex(p.uuid)] = p;
+		config.playerPlots.put(p.uuid, p);
 		save();
 		return true;
 	}
@@ -141,7 +166,7 @@ public class DataManager {
 		p.friends = pushString(p.friends, friend);
 		PlottyPlayer player = getPlayer(owner);
 		player.plots[plotIndex(p.id, player)] = p;
-		config.players[pIndex(owner)] = player;
+		config.playerPlots.put(owner, player);
 		save();
 	}
 	/**
@@ -169,7 +194,7 @@ public class DataManager {
 		p.friends = newFriends;
 		PlottyPlayer player = getPlayer(owner);
 		player.plots[plotIndex(p.id, player)] = p;
-		config.players[pIndex(owner)] = player; //Don't you just love fixed size arrays... T_T
+		config.playerPlots.put(owner, player);
 		save();
 	}
 	/**
@@ -179,7 +204,7 @@ public class DataManager {
 	 * @return A plot object (null if not found)
 	 */
 	public PlottyPlot getPlotFromCoords(int x,int z){
-		for(PlottyPlayer p : config.players){
+		for(PlottyPlayer p : config.playerPlots.values()){
 			for(PlottyPlot pl : p.plots){
 				if(pl.x == x && pl.z == z){
 					return pl;
@@ -194,7 +219,7 @@ public class DataManager {
 	 * @return
 	 */
 	public PlottyPlot getPlotFromId(int id){
-		for(PlottyPlayer p : config.players){
+		for(PlottyPlayer p : config.playerPlots.values()){
 			for(PlottyPlot pl : p.plots){
 				if(pl.id == id){
 					return pl;
@@ -209,7 +234,7 @@ public class DataManager {
 	 * @return The UUID of the plot owner (null if not found)
 	 */
 	public UUID getPlotOwner(PlottyPlot pl){
-		for(PlottyPlayer p : config.players){
+		for(PlottyPlayer p : config.playerPlots.values()){
 			for(PlottyPlot pp : p.plots){
 				if(pp.id == pl.id){
 					return p.uuid;
@@ -228,21 +253,6 @@ public class DataManager {
 		int i=0;
 		for(PlottyPlot pl : p.plots){
 			if(pl.id == id){
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
-	/**
-	 * Gets the index of a player in the config file (used to replace player files with new info)
-	 * @param p The UUID of the player
-	 * @return The index of a player in the config file. Returns -1 if not found.
-	 */
-	public int pIndex(UUID p){
-		int i=0;
-		for(PlottyPlayer pl : config.players){
-			if(pl.uuid.equals(p)){
 				return i;
 			}
 			i++;
@@ -280,31 +290,21 @@ public class DataManager {
 		newArray[newArray.length - 1] = object;
 		return newArray;
 	}
-	private PlottyPlayer getPlayer(String name, UUID uuid) {
-		for (PlottyPlayer p : config.players) {
-			if (p.uuid.toString().equalsIgnoreCase(uuid.toString())) {
-				return p;
-			}
-		}
-		PlottyPlayer p = new PlottyPlayer();
-		p.maxPlots = -1;
-		p.name = name;
-		p.uuid = uuid;
-		p.plots = new PlottyPlot[] {};
-		config.players = pushPlottyPlayer(config.players, p);
-		save();
-		return p;
-	}
 	public PlottyPlayer getPlayer(UUID uuid) {
-		for (PlottyPlayer p : config.players) {
-			if (p.uuid.equals(uuid)) {
-				return p;
-			}
-		}
+		if (config.playerPlots.containsKey(uuid)) return config.playerPlots.get(uuid);
 		return null;
 	}
-	public PlottyPlayer getPlayer(Player p) {
-		return getPlayer(p.getName(), p.getUniqueId());
+	public PlottyPlayer getPlayerOrCreate(Player p) {
+		UUID uuid = p.getUniqueId();
+		if (config.playerPlots.containsKey(uuid)) return config.playerPlots.get(uuid);
+		PlottyPlayer pp = new PlottyPlayer();
+		pp.maxPlots = -1;
+		pp.name = p.getName();
+		pp.uuid = uuid;
+		pp.plots = new PlottyPlot[] {};
+		config.playerPlots.put(uuid, pp);
+		save();
+		return pp;
 	}
 	public void save(){
 		try {
@@ -318,7 +318,7 @@ public class DataManager {
 	}
 	public int getLatestId(){
 		int greatest=-1;
-		for(PlottyPlayer p : config.players){
+		for(PlottyPlayer p : config.playerPlots.values()){
 			for(PlottyPlot pl : p.plots){
 				if(pl.id > greatest){
 					greatest = pl.id;

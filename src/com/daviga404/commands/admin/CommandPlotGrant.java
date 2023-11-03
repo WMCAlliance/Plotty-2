@@ -30,9 +30,9 @@ public class CommandPlotGrant extends PlottyCommand{
 		}
 		DataManager dm = plugin.getDataManager();
 		OfflinePlayer op = plugin.getOfflinePlayer(args[0]);
-		PlottyPlayer pp = dm.getPlayer(op.getUniqueId());
+		PlottyPlayer pp = dm.getPlayerOrCreate(op.getPlayer());
 		pp.grantedPlots += amount;
-		dm.config.players[dm.pIndex(op.getUniqueId())] = pp;
+		dm.config.playerPlots.put(op.getUniqueId(), pp);
 		dm.save();
 		
 		if(Bukkit.getPlayer(args[0]) == null){

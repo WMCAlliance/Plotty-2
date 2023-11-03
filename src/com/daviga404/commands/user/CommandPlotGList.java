@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ public class CommandPlotGList extends PlottyCommand{
 	public boolean execute(Player p, String[] args){
 		DataManager dm = plugin.dm;
 		ArrayList<PlottyPlot> plots = new ArrayList<PlottyPlot>();
-		for(PlottyPlayer pp : dm.config.players){
+		for (PlottyPlayer pp : dm.config.playerPlots.values()) {
 			for(PlottyPlot plot : pp.plots){
 				if(plot.visible){
 					plots.add(plot);
@@ -76,6 +77,12 @@ public class CommandPlotGList extends PlottyCommand{
 		}
 		ArrayList<String> plotStrings = new ArrayList<String>();
 		for(PlottyPlot plot : plots){
+			UUID plotOwner = dm.getPlotOwner(plot);
+			String plotOwnerName = "Unknown";
+			if (plotOwner != null) {
+				plotOwnerName = plugin.getServer().getOfflinePlayer(plotOwner).getName();
+				if (plotOwnerName == null) plotOwnerName = dm.getPlayer(plotOwner).name;
+			}
 			if(sortByTop){
 				StringBuilder s = new StringBuilder();
 				s.append(ChatColor.DARK_BLUE).append("- [");
@@ -83,7 +90,7 @@ public class CommandPlotGList extends PlottyCommand{
 				s.append("] ").append(ChatColor.BLUE);
 				s.append(plot.id);
 				s.append(" | ");
-				s.append(dm.getPlotOwner(plot) != null ? dm.getPlotOwner(plot) : "Unknown");
+				s.append(plotOwnerName);
 				s.append(" ").append(ChatColor.AQUA).append("(");
 				s.append(plot.rank);
 				s.append(" votes)\n");
@@ -93,7 +100,7 @@ public class CommandPlotGList extends PlottyCommand{
 				s.append(ChatColor.DARK_BLUE).append("- [");
 				s.append(plot.id);
 				s.append("] ").append(ChatColor.BLUE);
-				s.append(dm.getPlotOwner(plot) != null ? dm.getPlotOwner(plot) : "Unknown");
+				s.append(plotOwnerName);
 				s.append(" | ").append(ChatColor.AQUA).append("(");
 				s.append(plot.rank);
 				s.append(" votes)\n");

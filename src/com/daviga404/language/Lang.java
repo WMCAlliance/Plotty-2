@@ -4,6 +4,7 @@ public class Lang {
 	public String createdPlot;
 	public String reachedMaxPlots;
 	public String notStandingInPlot;
+	public String noPlots;
 	public String dontOwn;
 	public String madePublic;
 	public String notFound;

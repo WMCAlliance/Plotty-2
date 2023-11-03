@@ -64,7 +64,7 @@ public class Plotty extends JavaPlugin{
 			public void onPlayerJoin(PlayerJoinEvent e){
 				List<UUID> list = stringArrayToList(dm.config.playerGrantNotify);
 				if(list.contains(e.getPlayer().getUniqueId())){
-					int grantedPlots = dm.getPlayer(e.getPlayer()).grantedPlots;
+					int grantedPlots = dm.getPlayer(e.getPlayer().getUniqueId()).grantedPlots;
 					if(grantedPlots > 0){
 						e.getPlayer().sendMessage(ChatColor.DARK_BLUE + "[Plotty] " + ChatColor.AQUA + "You have " + ChatColor.BLUE + grantedPlots + " " + ChatColor.AQUA + "plots allocated to you. You can claim them with /plot claim or /plot new!");
 					}
@@ -95,10 +95,10 @@ public class Plotty extends JavaPlugin{
 	}
 	public String makePlot(int id, int x, int y, int z, World w, Player p,boolean claiming){
 		boolean canMake = false;
-		PlottyPlayer pl = dm.getPlayer(p);
+		PlottyPlayer pl = dm.getPlayerOrCreate(p);
 		if(pl.grantedPlots > 0){
 			pl.grantedPlots--;
-			dm.config.players[dm.pIndex(p.getUniqueId())] = pl;
+			dm.config.playerPlots.put(p.getUniqueId(), pl);
 			dm.save();
 			canMake = true;
 		}else if(!dm.pExceededMaxPlots(p.getUniqueId())){

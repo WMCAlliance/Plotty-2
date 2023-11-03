@@ -21,6 +21,7 @@ public class LangManager {
 		defaultLang = new Lang();
 		defaultLang.alreadyFriend = "&1[Plotty] &9This player is already a friend in your plot.";
 		defaultLang.createdPlot = "&a[Plotty] Plot created with ID &2%s";
+		defaultLang.noPlots = "&4[Plotty] &cYou do not have any plots.";
 		defaultLang.dontOwn = "&4[Plotty] &cYou do not own this plot.";
 		defaultLang.friendAdded = "&a[Plotty] Friend added to plot!";
 		defaultLang.friendNotFound = "&4[Plotty] &cFriend not found.";
@@ -69,6 +70,7 @@ public class LangManager {
 		language.alreadyFriend = language.alreadyFriend == null ? defaultLang.alreadyFriend : language.alreadyFriend;
 		language.cantVote = language.cantVote == null ? defaultLang.cantVote : language.cantVote;
 		language.createdPlot = language.createdPlot == null ? defaultLang.createdPlot : language.createdPlot;
+		language.noPlots = language.noPlots == null ? defaultLang.noPlots : language.noPlots;
 		language.dontOwn = language.dontOwn == null ? defaultLang.dontOwn : language.dontOwn;
 		language.friendAdded = language.friendAdded == null ? defaultLang.friendAdded : language.friendAdded;
 		language.friendNotFound = language.friendNotFound == null ? defaultLang.friendNotFound : language.friendNotFound;
@@ -91,7 +93,8 @@ public class LangManager {
 		//TODO: Properly do this conversion
         language.alreadyFriend = language.alreadyFriend.replaceAll("\u00A7","&");
         language.cantVote = language.cantVote.replaceAll("\u00A7","&");
-        language.createdPlot = language.createdPlot.replaceAll("\u00A7","&");
+		language.createdPlot = language.createdPlot.replaceAll("\u00A7", "&");
+		language.noPlots = language.noPlots.replaceAll("\u00A7", "&");
         language.dontOwn = language.dontOwn.replaceAll("\u00A7","&");
         language.friendAdded = language.friendAdded.replaceAll("\u00A7","&");
         language.friendNotFound = language.friendNotFound.replaceAll("\u00A7","&");
@@ -122,6 +125,7 @@ public class LangManager {
 		language.alreadyFriend = ChatColor.translateAlternateColorCodes(amp, language.alreadyFriend);
 		language.cantVote = ChatColor.translateAlternateColorCodes(amp, language.cantVote);
 		language.createdPlot = ChatColor.translateAlternateColorCodes(amp, language.createdPlot);
+		language.noPlots = ChatColor.translateAlternateColorCodes(amp, language.noPlots);
 		language.dontOwn = ChatColor.translateAlternateColorCodes(amp, language.dontOwn);
 		language.friendAdded = ChatColor.translateAlternateColorCodes(amp, language.friendAdded);
 		language.friendNotFound = ChatColor.translateAlternateColorCodes(amp, language.friendNotFound);

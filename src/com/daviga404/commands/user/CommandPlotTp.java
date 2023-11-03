@@ -25,7 +25,7 @@ public class CommandPlotTp extends PlottyCommand{
 	public boolean execute(Player p, String[] args){
 		PlottyPlot pl=null;
 		DataManager dm = plugin.getDataManager();
-		for(PlottyPlayer player : dm.config.players){
+		for (PlottyPlayer player : dm.config.playerPlots.values()) {
 			for(PlottyPlot plot : player.plots){
 				if(plot.id == Integer.parseInt(args[0])){
 					pl = plot;

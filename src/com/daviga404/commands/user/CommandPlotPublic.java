@@ -31,9 +31,13 @@ public class CommandPlotPublic extends PlottyCommand{
 			return true;
 		}
 		plot.visible = true;
-		PlottyPlayer pp = dm.getPlayer(p);
-		pp.plots[dm.plotIndex(plot.id, dm.getPlayer(p))] = plot;
-		dm.config.players[dm.pIndex(p.getUniqueId())] = pp;
+		PlottyPlayer pp = dm.getPlayer(p.getUniqueId());
+		if (pp == null) {
+			p.sendMessage(plugin.lang.noPlots);
+			return true;
+		}
+		pp.plots[dm.plotIndex(plot.id, pp)] = plot;
+		dm.config.playerPlots.put(p.getUniqueId(), pp);
 		dm.save();
 		p.sendMessage(plugin.lang.madePublic);
 		return true;

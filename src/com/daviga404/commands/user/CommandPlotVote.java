@@ -25,8 +25,11 @@ public class CommandPlotVote extends PlottyCommand{
 	}
 	public boolean execute(Player p, String[] args){
 		DataManager dm = plugin.getDataManager();
-		PlottyPlayer player = dm.getPlayer(p);
-		if(player == null){System.out.println("[Plotty] ERROR: PLAYER IS NULL. CHECK CONFIG FOR ERRORS.");return false;}
+		PlottyPlayer player = dm.getPlayerOrCreate(p);
+		if (player == null) {
+			plugin.getLogger().warning("[Plotty] ERROR: PLAYER IS NULL. CHECK CONFIG FOR ERRORS.");
+			return false;
+		}
 		long lastVoted = player.lastVoted;
 		if(lastVoted == 0 || now()-lastVoted > (dm.config.voteDelay*60*60*1000)){
 			Location l = p.getLocation();
@@ -57,9 +60,9 @@ public class CommandPlotVote extends PlottyCommand{
 				return true;
 			}
 			owner.plots[dm.plotIndex(plot.id, owner)] = plot;
-			dm.config.players[dm.pIndex(owner.uuid)] = owner;
+			dm.config.playerPlots.put(owner.uuid, owner);
 			player.lastVoted = now();
-			dm.config.players[dm.pIndex(player.uuid)] = player;
+			dm.config.playerPlots.put(player.uuid, player);
 			dm.save();
 		}else{
 			p.sendMessage(plugin.lang.cantVote.replaceAll("%s", Math.round(((lastVoted+(dm.config.voteDelay*60*60*1000))-now())/1000/60)+""));

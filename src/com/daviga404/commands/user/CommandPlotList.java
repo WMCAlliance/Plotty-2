@@ -3,6 +3,7 @@ package com.daviga404.commands.user;
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
+import com.daviga404.data.PlottyPlayer;
 import com.daviga404.data.PlottyPlot;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -21,10 +22,15 @@ public class CommandPlotList extends PlottyCommand{
 		this.plugin = pl;
 	}
 	public boolean execute(Player p, String[] args){
-		StringBuilder builder = new StringBuilder();
-		builder.append(ChatColor.DARK_BLUE + "[Plotty] Your Plots:\n");
 		DataManager dm = plugin.getDataManager();
-		for(PlottyPlot plot : dm.getPlayer(p).plots){
+		PlottyPlayer pp = dm.getPlayer(p.getUniqueId());
+		if (pp == null || pp.plots == null || pp.plots.length == 0) {
+			p.sendMessage(plugin.lang.noPlots);
+			return true;
+		}
+		StringBuilder builder = new StringBuilder();
+		builder.append(ChatColor.DARK_BLUE).append("[Plotty] Your Plots:\n");
+		for(PlottyPlot plot : pp.plots){
 			builder.append(ChatColor.AQUA + "- Plot ");
 			builder.append(plot.id);
 			builder.append(ChatColor.BLUE + " [x:");
