@@ -11,10 +11,12 @@ import com.sk89q.worldguard.protection.managers.storage.StorageException;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import java.util.Map;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
 
 public class PlotRegion {
@@ -23,18 +25,17 @@ public class PlotRegion {
 		PlotRegion.plugin = pl;
 	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void makePlotRegion(Plot p,String owner,int id){
-		String name = "plot_"+owner.toLowerCase()+"_"+id;
+	public static void makePlotRegion(Plot p,Player owner,int id){
+		String name = "plot_"+owner.getName().toLowerCase()+"_"+id;
 		BlockVector3 point1 = BlockVector3.at(p.getX(),0,p.getZ());
 		BlockVector3 point2 = BlockVector3.at(p.getX()+plugin.plotSize,256,p.getZ()+plugin.plotSize);
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager rm = container.get(BukkitAdapter.adapt(p.getWorld()));
 		ProtectedCuboidRegion pcr = new ProtectedCuboidRegion(name, point1, point2);
-		pcr.getOwners().addPlayer(owner);
+		pcr.getOwners().addPlayer(owner.getUniqueId());
 		if(!plugin.getDataManager().config.enableTnt){
 			pcr.setFlag(Flags.TNT,State.DENY);
 		}
-		CommandSender s = (CommandSender)Bukkit.getPlayer(owner);
 		for(Map.Entry<String, String> flag : plugin.getDataManager().config.flags.entrySet()){
 			try {
 				/**
@@ -48,7 +49,7 @@ public class PlotRegion {
 //				Flag f = (Flag)flag;
 //				pcr.setFlag(f, obj);
 			} catch(Exception e1) {
-				s.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Error in config: custom WorldGuard flag has incorrect value.");
+				owner.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Error in config: custom WorldGuard flag has incorrect value.");
 			}
 		}
 		rm.addRegion(pcr);
@@ -58,8 +59,8 @@ public class PlotRegion {
 			e.printStackTrace();
 		}
 	}
-	public static boolean addFriend(int id, String owner, String friend, World w){
-		String name = "plot_"+owner.toLowerCase()+"_"+id;
+	public static boolean addFriend(int id, Player owner, UUID friend, World w){
+		String name = "plot_"+owner.getName().toLowerCase()+"_"+id;
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager rm = container.get(BukkitAdapter.adapt(w));
 		if(rm.getRegion(name) != null){
@@ -74,7 +75,7 @@ public class PlotRegion {
 			return false;
 		}
 	}
-	public static boolean removeFriend(int id, String owner, String friend, World w){
+	public static boolean removeFriend(int id, String owner, UUID friend, World w){
 		String name = "plot_"+owner.toLowerCase()+"_"+id;
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager rm = container.get(BukkitAdapter.adapt(w));

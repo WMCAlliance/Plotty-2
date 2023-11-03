@@ -2,6 +2,7 @@ package com.daviga404.data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PlottyConfig {
 	public int plotSize;
@@ -17,7 +18,7 @@ public class PlottyConfig {
 	public boolean publicByDefault;
 	public boolean enableTnt;
 	public double voteDelay=24.0;
-	public String[] playerGrantNotify=new String[]{};
+	public UUID[] playerGrantNotify=new UUID[]{};
 	public PlottyPlayer[] players;
 	public boolean enableEco = false;
 	public double plotCost = 0.0;

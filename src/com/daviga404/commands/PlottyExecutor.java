@@ -3,7 +3,6 @@ package com.daviga404.commands;
 import com.daviga404.Plotty;
 import com.daviga404.commands.admin.CommandPlotConfig;
 import com.daviga404.commands.admin.CommandPlotGrant;
-import com.daviga404.commands.admin.CommandPlotMigrate;
 import com.daviga404.commands.admin.CommandPlotReload;
 import com.daviga404.commands.user.CommandPlotClaim;
 import com.daviga404.commands.user.CommandPlotClear;
@@ -50,7 +49,6 @@ public class PlottyExecutor implements CommandExecutor, TabExecutor {
 		//admin commands
 		cmds.add(new CommandPlotConfig(pl));
 		cmds.add(new CommandPlotReload(pl));
-		cmds.add(new CommandPlotMigrate(pl));
 		cmds.add(new CommandPlotGrant(pl));
 	}
     @Override

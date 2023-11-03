@@ -6,6 +6,7 @@ import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlot;
 import com.daviga404.plots.Plot;
 import com.daviga404.plots.PlotDeleter;
+import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -30,7 +31,7 @@ public class CommandPlotClear extends PlottyCommand{
 			return true;
 		}
 		DataManager dm = plugin.getDataManager();
-		if(PlotDeleter.isCooling(p.getName())){
+		if(PlotDeleter.isCooling(p.getUniqueId())){
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "You cannot clear another plot for " + dm.config.delCooldown + " seconds.");
 			return true;
 		}
@@ -39,9 +40,9 @@ public class CommandPlotClear extends PlottyCommand{
 			p.sendMessage(plugin.lang.notFound);
 			return true;
 		}
-		String owner = dm.getPlotOwner(plot);
+		UUID owner = dm.getPlotOwner(plot);
 		boolean canDelete = false;
-		if(owner != null && p.getName().equalsIgnoreCase(owner)){
+		if(owner != null && p.getUniqueId().equals(owner)){
 			canDelete = true;
 		}else if(p.hasPermission("plotty.clear.others") || p.hasPermission("plotty.*") || p.isOp()){
 			canDelete = true;
@@ -51,7 +52,7 @@ public class CommandPlotClear extends PlottyCommand{
 			return true;
 		}
 		plugin.getPlotClearer().clearPlot(new Plot(plot.x,plugin.plotHeight,plot.z,p.getWorld()));
-		PlotDeleter.addCooldown(p.getName(), plugin);
+		PlotDeleter.addCooldown(p.getUniqueId(), plugin);
 		p.sendMessage(plugin.lang.plotCleared);
 		return true;
 	}

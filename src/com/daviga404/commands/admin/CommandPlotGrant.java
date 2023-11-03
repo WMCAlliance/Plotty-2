@@ -4,8 +4,10 @@ import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlayer;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class CommandPlotGrant extends PlottyCommand{
@@ -27,20 +29,21 @@ public class CommandPlotGrant extends PlottyCommand{
 			amount = Integer.parseInt(args[1]);
 		}
 		DataManager dm = plugin.getDataManager();
-		PlottyPlayer pp = dm.getPlayer(args[0]);
+		OfflinePlayer op = plugin.getOfflinePlayer(args[0]);
+		PlottyPlayer pp = dm.getPlayer(op.getUniqueId());
 		pp.grantedPlots += amount;
-		dm.config.players[dm.pIndex(args[0])] = pp;
+		dm.config.players[dm.pIndex(op.getUniqueId())] = pp;
 		dm.save();
 		
 		if(Bukkit.getPlayer(args[0]) == null){
-			String[] pgn = dm.config.playerGrantNotify;
-			String[] newpgn = new String[pgn.length+1];
+			UUID[] pgn = dm.config.playerGrantNotify;
+			UUID[] newpgn = new UUID[pgn.length+1];
 			int i=0;
-			for(String s : pgn){
+			for(UUID s : pgn){
 				newpgn[i] = s;
 				i++;
 			}
-			newpgn[pgn.length] = args[0];
+			newpgn[pgn.length] = plugin.getOfflinePlayer(args[0]).getUniqueId();
 			dm.config.playerGrantNotify = newpgn;
 			dm.save();
 			p.sendMessage(ChatColor.GREEN + "[Plotty] Granted " + ChatColor.DARK_GREEN + amount + ChatColor.GREEN + " plots to " + ChatColor.DARK_BLUE + args[0] + ChatColor.GREEN + ". Player will be notified when they come online.");

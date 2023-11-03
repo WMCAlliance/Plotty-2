@@ -25,7 +25,7 @@ public class CommandPlotVote extends PlottyCommand{
 	}
 	public boolean execute(Player p, String[] args){
 		DataManager dm = plugin.getDataManager();
-		PlottyPlayer player = dm.getPlayer(p.getName());
+		PlottyPlayer player = dm.getPlayer(p);
 		if(player == null){System.out.println("[Plotty] ERROR: PLAYER IS NULL. CHECK CONFIG FOR ERRORS.");return false;}
 		long lastVoted = player.lastVoted;
 		if(lastVoted == 0 || now()-lastVoted > (dm.config.voteDelay*60*60*1000)){
@@ -47,16 +47,19 @@ public class CommandPlotVote extends PlottyCommand{
 				return true;
 			}
 			plot.rank = plot.rank+1;
-			if(dm.getPlotOwner(plot) == null || dm.getPlayer(dm.getPlotOwner(plot)) == null){p.sendMessage(ChatColor.DARK_RED + "ERROR: " + ChatColor.RED + "Owner's playerdata not found.");return true;}
+			if(dm.getPlotOwner(plot) == null || dm.getPlayer(dm.getPlotOwner(plot)) == null){
+				p.sendMessage(ChatColor.DARK_RED + "ERROR: " + ChatColor.RED + "Owner's playerdata not found.");
+				return true;
+			}
 			PlottyPlayer owner = dm.getPlayer(dm.getPlotOwner(plot));
-			if(owner.name.equalsIgnoreCase(player.name)){
+			if(owner.uuid.toString().equalsIgnoreCase(player.uuid.toString())){
 				p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "You can't vote for your own plot!");
 				return true;
 			}
 			owner.plots[dm.plotIndex(plot.id, owner)] = plot;
-			dm.config.players[dm.pIndex(owner.name)] = owner;
+			dm.config.players[dm.pIndex(owner.uuid)] = owner;
 			player.lastVoted = now();
-			dm.config.players[dm.pIndex(player.name)] = player;
+			dm.config.players[dm.pIndex(player.uuid)] = player;
 			dm.save();
 		}else{
 			p.sendMessage(plugin.lang.cantVote.replaceAll("%s", Math.round(((lastVoted+(dm.config.voteDelay*60*60*1000))-now())/1000/60)+""));

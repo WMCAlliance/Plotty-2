@@ -6,6 +6,7 @@ import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlayer;
 import com.daviga404.data.PlottyPlot;
 import com.daviga404.plots.PlotRegion;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -24,7 +25,7 @@ public class CommandPlotFriend extends PlottyCommand{
 	public boolean execute(Player p, String[] args){
 		//Check if player has plot by id
 		DataManager dm = plugin.getDataManager();
-		PlottyPlayer pp = dm.getPlayer(p.getName());
+		PlottyPlayer pp = dm.getPlayer(p);
 		PlottyPlot plot=null;
 		for(PlottyPlot pplot : pp.plots){
 			if(pplot.id == Integer.parseInt(args[1])){
@@ -40,14 +41,15 @@ public class CommandPlotFriend extends PlottyCommand{
 			}
 		}
 		//Check if friend is owner
-		if(dm.getPlotOwner(plot) != null && dm.getPlotOwner(plot).equalsIgnoreCase(args[0])){
+		UUID plotOwner = dm.getPlotOwner(plot);
+		if(plotOwner != null && plotOwner.equals(p.getUniqueId()) && p.getName().equalsIgnoreCase(args[0])){
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Why would you want to add yourself as a friend?");
 			return true;
 		}
 		//Add as a friend in plots.json
-		dm.addFriend(plot,p.getName(),args[0]);
+		dm.addFriend(plot,p.getUniqueId(),args[0]);
 		//Add as owner (WG)
-		if(!PlotRegion.addFriend(plot.id, p.getName(), args[0], Bukkit.getWorld(plot.world))){
+		if(!PlotRegion.addFriend(plot.id, p, plugin.getOfflinePlayer(args[0]).getUniqueId(), Bukkit.getWorld(plot.world))){
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Unexpected error: region not found.");
 			return true;
 		}

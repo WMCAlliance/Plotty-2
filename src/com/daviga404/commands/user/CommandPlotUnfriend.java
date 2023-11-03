@@ -25,7 +25,7 @@ public class CommandPlotUnfriend extends PlottyCommand{
 	public boolean execute(Player p, String[] args){
 		//Check if player has plot
 		DataManager dm = plugin.getDataManager();
-		PlottyPlayer pp = dm.getPlayer(p.getName());
+		PlottyPlayer pp = dm.getPlayer(p);
 		PlottyPlot plot=null;
 		for(PlottyPlot pplot : pp.plots){
 			if(pplot.id == Integer.parseInt(args[1])){
@@ -42,9 +42,9 @@ public class CommandPlotUnfriend extends PlottyCommand{
 		}
 		if(!exists){p.sendMessage(plugin.lang.friendNotFound);return true;}
 		//Remove friend from plots.json
-		dm.removeFriend(plot,p.getName(),args[0]);
+		dm.removeFriend(plot,p.getUniqueId(),args[0]);
 		//Remove friend from WG
-		if(!PlotRegion.removeFriend(plot.id,p.getName(),args[0],Bukkit.getWorld(plot.world))){
+		if(!PlotRegion.removeFriend(plot.id,p.getName(),plugin.getOfflinePlayer(args[0]).getUniqueId(),Bukkit.getWorld(plot.world))){
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Unexpected error: region not found.");
 			return true;
 		}

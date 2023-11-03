@@ -10,6 +10,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -49,11 +50,11 @@ public class CommandPlotInfo extends PlottyCommand{
 		StringBuilder plotInfo = new StringBuilder();
 		plotInfo.append(ChatColor.DARK_BLUE).append("[Plotty] Plot Info:\n");
 		plotInfo.append(ChatColor.BLUE).append("- Owner: ").append(ChatColor.AQUA);
-		String owner = dm.getPlotOwner(plot);
+		UUID owner = dm.getPlotOwner(plot);
 		if(owner == null){
 			plotInfo.append("unknown");
 		}else{
-			plotInfo.append(owner);
+			plotInfo.append(plugin.getServer().getOfflinePlayer(owner).getName());
 		}
 		plotInfo.append("\n").append(ChatColor.BLUE).append("- ID: ").append(ChatColor.AQUA);
 		plotInfo.append(plot.id);

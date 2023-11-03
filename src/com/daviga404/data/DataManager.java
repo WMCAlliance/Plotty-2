@@ -11,7 +11,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class DataManager {
 	public File file;
@@ -28,7 +31,7 @@ public class DataManager {
 		defaultConfig.enableEco = false;
 		defaultConfig.enableTnt = false;
 		defaultConfig.maxPlots = 5;
-		defaultConfig.playerGrantNotify = new String[]{};
+		defaultConfig.playerGrantNotify = new UUID[]{};
 		defaultConfig.players = new PlottyPlayer[]{};
 		defaultConfig.plotCost = 0.0;
 		defaultConfig.plotHeight = 20;
@@ -84,11 +87,11 @@ public class DataManager {
 	/**
 	 * Adds a plot to the config file and saves.
 	 * @param p The plot to add
-	 * @param owner The name of the owner of the plot
+	 * @param owner The UUID of the owner of the plot
 	 * @param id The ID of the plot
 	 * @see getLatestId();
 	 */
-	public void addPlot(Plot p, String owner, int id){
+	public void addPlot(Plot p, UUID owner, int id){
 		PlottyPlayer player = getPlayer(owner);///////////////
 		PlottyPlot plot = new PlottyPlot();
 		plot.friends = new String[]{};
@@ -109,7 +112,7 @@ public class DataManager {
 	 * @param owner The name of the owner
 	 * @return Whether the task succeeded.
 	 */
-	public boolean removePlot(int id, String owner){
+	public boolean removePlot(int id, UUID owner){
 		PlottyPlayer p = getPlayer(owner);
 		if(p == null) return false;
 		PlottyPlot[] newArray = new PlottyPlot[p.plots.length-1];
@@ -121,8 +124,8 @@ public class DataManager {
 			}
 		}
 		p.plots = newArray;
-		if(pIndex(p.name) == -1) return false;
-		config.players[pIndex(p.name)] = p;
+		if(pIndex(p.uuid) == -1) return false;
+		config.players[pIndex(p.uuid)] = p;
 		save();
 		return true;
 	}
@@ -132,7 +135,7 @@ public class DataManager {
 	 * @param owner The name of the owner of the plot
 	 * @param friend The friend to add
 	 */
-	public void addFriend(PlottyPlot p, String owner, String friend){
+	public void addFriend(PlottyPlot p, UUID owner, String friend){
 		p.friends = pushString(p.friends, friend);
 		PlottyPlayer player = getPlayer(owner);
 		player.plots[plotIndex(p.id, player)] = p;
@@ -142,10 +145,10 @@ public class DataManager {
 	/**
 	 * Removes a friend from a plot in the config and saves.
 	 * @param p The plot to remove a friend from
-	 * @param owner The name of the plot owner
+	 * @param owner The UUID of the plot owner
 	 * @param friend The name of the friend to remove.
 	 */
-	public void removeFriend(PlottyPlot p, String owner, String friend){
+	public void removeFriend(PlottyPlot p, UUID owner, String friend){
 		boolean exists=false;
 		for(String cf : p.friends){
 			if(friend.equalsIgnoreCase(cf)){
@@ -201,13 +204,13 @@ public class DataManager {
 	/**
 	 * Gets the owner of a plot from the plot object.
 	 * @param pl The plot to find the owner of.
-	 * @return The name of the plot owner (null if not found)
+	 * @return The UUID of the plot owner (null if not found)
 	 */
-	public String getPlotOwner(PlottyPlot pl){
+	public UUID getPlotOwner(PlottyPlot pl){
 		for(PlottyPlayer p : config.players){
 			for(PlottyPlot pp : p.plots){
 				if(pp.id == pl.id){
-					return p.name;
+					return p.uuid;
 				}
 			}
 		}
@@ -231,13 +234,13 @@ public class DataManager {
 	}
 	/**
 	 * Gets the index of a player in the config file (used to replace player files with new info)
-	 * @param p The name of the player (case insensitive)
+	 * @param p The UUID of the player
 	 * @return The index of a player in the config file. Returns -1 if not found.
 	 */
-	public int pIndex(String p){
+	public int pIndex(UUID p){
 		int i=0;
 		for(PlottyPlayer pl : config.players){
-			if(pl.name.equalsIgnoreCase(p)){
+			if(pl.uuid.equals(p)){
 				return i;
 			}
 			i++;
@@ -246,12 +249,12 @@ public class DataManager {
 	}
 	/**
 	 * Gets if the player has reached their maximum number of plots.
-	 * @param name The name of the player.
+	 * @param uuid The name of the player.
 	 * @return A boolean that is true if the player has reached their maximum number of plots.
 	 */
-	public boolean pExceededMaxPlots(String name){
-		int count = getPlayer(name).plots.length;
-		int max = getPlayer(name).maxPlots == -1 ? config.maxPlots : getPlayer(name).maxPlots;
+	public boolean pExceededMaxPlots(UUID uuid){
+		int count = getPlayer(uuid).plots.length;
+		int max = getPlayer(uuid).maxPlots == -1 ? config.maxPlots : getPlayer(uuid).maxPlots;
 		return count >= max;
 	}
 	
@@ -268,25 +271,38 @@ public class DataManager {
 		newArray[newArray.length-1] = object;
 		return newArray;
 	}
-	public String[] pushString(String[] array, String object){
-		String[] newArray = new String[array.length+1];
-		System.arraycopy(array,0,newArray,0,array.length);
-		newArray[newArray.length-1] = object;
+
+	public String[] pushString(String[] array, String object) {
+		String[] newArray = new String[array.length + 1];
+		System.arraycopy(array, 0, newArray, 0, array.length);
+		newArray[newArray.length - 1] = object;
 		return newArray;
 	}
-	public PlottyPlayer getPlayer(String name){
-		for(PlottyPlayer p : config.players){
-			if(p.name.equalsIgnoreCase(name)){
+	private PlottyPlayer getPlayer(String name, UUID uuid) {
+		for (PlottyPlayer p : config.players) {
+			if (p.uuid.toString().equalsIgnoreCase(uuid.toString())) {
 				return p;
 			}
 		}
 		PlottyPlayer p = new PlottyPlayer();
 		p.maxPlots = -1;
 		p.name = name;
-		p.plots = new PlottyPlot[]{};
-		config.players = pushPlottyPlayer(config.players,p);
+		p.uuid = uuid;
+		p.plots = new PlottyPlot[] {};
+		config.players = pushPlottyPlayer(config.players, p);
 		save();
 		return p;
+	}
+	public PlottyPlayer getPlayer(UUID uuid) {
+		for (PlottyPlayer p : config.players) {
+			if (p.uuid.equals(uuid)) {
+				return p;
+			}
+		}
+		return null;
+	}
+	public PlottyPlayer getPlayer(Player p) {
+		return getPlayer(p.getName(), p.getUniqueId());
 	}
 	public void save(){
 		try {

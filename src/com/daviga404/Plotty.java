@@ -12,10 +12,12 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -60,13 +62,14 @@ public class Plotty extends JavaPlugin{
 			@SuppressWarnings("unused")
 			@EventHandler(priority = EventPriority.NORMAL)
 			public void onPlayerJoin(PlayerJoinEvent e){
-				List<String> list = stringArrayToList(dm.config.playerGrantNotify);
-				if(list.contains(e.getPlayer().getName())){
-					if(dm.getPlayer(e.getPlayer().getName()).grantedPlots > 0){
-						e.getPlayer().sendMessage(ChatColor.DARK_BLUE + "[Plotty] " + ChatColor.AQUA + "You have " + ChatColor.BLUE + dm.getPlayer(e.getPlayer().getName()).grantedPlots + " " + ChatColor.AQUA + "plots allocated to you. You can claim them with /plot claim or /plot new!");
+				List<UUID> list = stringArrayToList(dm.config.playerGrantNotify);
+				if(list.contains(e.getPlayer().getUniqueId())){
+					int grantedPlots = dm.getPlayer(e.getPlayer()).grantedPlots;
+					if(grantedPlots > 0){
+						e.getPlayer().sendMessage(ChatColor.DARK_BLUE + "[Plotty] " + ChatColor.AQUA + "You have " + ChatColor.BLUE + grantedPlots + " " + ChatColor.AQUA + "plots allocated to you. You can claim them with /plot claim or /plot new!");
 					}
-					list.remove(e.getPlayer().getName());
-					String[] listArray = list.toArray(new String[list.size()]);
+					list.remove(e.getPlayer().getUniqueId());
+					UUID[] listArray = list.toArray(new UUID[list.size()]);
 					dm.config.playerGrantNotify = listArray;
 					dm.save();
 				}
@@ -92,13 +95,13 @@ public class Plotty extends JavaPlugin{
 	}
 	public String makePlot(int id, int x, int y, int z, World w, Player p,boolean claiming){
 		boolean canMake = false;
-		if(dm.getPlayer(p.getName()).grantedPlots > 0){
-			PlottyPlayer pl = dm.getPlayer(p.getName());
+		PlottyPlayer pl = dm.getPlayer(p);
+		if(pl.grantedPlots > 0){
 			pl.grantedPlots--;
-			dm.config.players[dm.pIndex(p.getName())] = pl;
+			dm.config.players[dm.pIndex(p.getUniqueId())] = pl;
 			dm.save();
 			canMake = true;
-		}else if(!dm.pExceededMaxPlots(p.getName())){
+		}else if(!dm.pExceededMaxPlots(p.getUniqueId())){
 			canMake = true;
 		}
 		if(!canMake){
@@ -106,16 +109,16 @@ public class Plotty extends JavaPlugin{
 		}
 		boolean usedEco = false;
 		if(eco != null && dm.config.enableEco && canMake){
-			if(eco.has(p.getName(), dm.config.plotCost)){
+			if(eco.has(p, dm.config.plotCost)){
 				usedEco = true;
-				eco.withdrawPlayer(p.getName(), dm.config.plotCost);
+				eco.withdrawPlayer(p, dm.config.plotCost);
 			}else{
 				return lang.noMoney;
 			}
 		}
 		Plot legacy = new Plot(x,y,z,w);
-		PlotRegion.makePlotRegion(legacy, p.getName(), id);
-		dm.addPlot(legacy, p.getName(), id);
+		PlotRegion.makePlotRegion(legacy, p, id);
+		dm.addPlot(legacy, p.getUniqueId(), id);
 		telePlayer(legacy, p);
 		String msg = "";
 		msg = claiming ? lang.plotClaimed : lang.createdPlot;
@@ -167,13 +170,21 @@ public class Plotty extends JavaPlugin{
 			pl.teleport(new Location(p.getWorld(),x,fy,z));
 		}
 	}
+
+    @SuppressWarnings("deprecation")
+    public OfflinePlayer getOfflinePlayer(String name) {
+        OfflinePlayer op = getServer().getPlayerExact(name);
+        if (op == null) op = getServer().getPlayer(name);
+        if (op == null) op = getServer().getOfflinePlayer(name);
+        return op;
+    }
 	public int plotSize=64;
 	public int plotHeight=20;
 	public Material base=Material.STONE;
 	public Material surface=Material.GRASS;
-	private List<String> stringArrayToList(String[] array){
-		List<String> list = new ArrayList<String>();
-		for(String s : array){
+	private List<UUID> stringArrayToList(UUID[] array){
+		List<UUID> list = new ArrayList<UUID>();
+		for(UUID s : array){
 			list.add(s);
 		}
 		return list;

@@ -24,7 +24,7 @@ public class CommandPlotList extends PlottyCommand{
 		StringBuilder builder = new StringBuilder();
 		builder.append(ChatColor.DARK_BLUE + "[Plotty] Your Plots:\n");
 		DataManager dm = plugin.getDataManager();
-		for(PlottyPlot plot : dm.getPlayer(p.getName()).plots){
+		for(PlottyPlot plot : dm.getPlayer(p).plots){
 			builder.append(ChatColor.AQUA + "- Plot ");
 			builder.append(plot.id);
 			builder.append(ChatColor.BLUE + " [x:");

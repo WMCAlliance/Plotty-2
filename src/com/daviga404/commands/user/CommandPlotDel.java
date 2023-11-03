@@ -10,6 +10,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -27,7 +28,7 @@ public class CommandPlotDel extends PlottyCommand{
 	}
 	
 	public boolean execute(Player p, String[] args){
-		if(PlotDeleter.isCooling(p.getName())){
+		if(PlotDeleter.isCooling(p.getUniqueId())){
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "You cannot delete another plot for "+plugin.dm.config.delCooldown+" seconds.");
 			return true;
 		}
@@ -38,7 +39,7 @@ public class CommandPlotDel extends PlottyCommand{
 			return true;
 		}
 		boolean canDelete = false;
-		if(dm.getPlotOwner(plot) != null && dm.getPlotOwner(plot).equalsIgnoreCase(p.getName())){
+		if(dm.getPlotOwner(plot) != null && dm.getPlotOwner(plot).equals(p.getUniqueId())){
 			canDelete = true;
 		}else if(p.hasPermission("plotty.del.others") || p.hasPermission("plotty.*") || p.isOp()){
 			canDelete = true;
@@ -47,7 +48,7 @@ public class CommandPlotDel extends PlottyCommand{
 			p.sendMessage(plugin.lang.dontOwn);
 			return true;
 		}
-		String owner = dm.getPlotOwner(plot);
+		UUID owner = dm.getPlotOwner(plot);
 		if(!dm.removePlot(plot.id, owner)){
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Error while removing plot (contact daviga404 on Bukkit to report)");
 			return true;
@@ -62,7 +63,7 @@ public class CommandPlotDel extends PlottyCommand{
 		if(dm.config.clearOnDelete){
 			plugin.getPlotClearer().clearPlot(new Plot(plot.x,plugin.plotHeight,plot.z,p.getWorld()));
 		}
-		PlotDeleter.addCooldown(p.getName(), plugin);
+		PlotDeleter.addCooldown(p.getUniqueId(), plugin);
 		p.sendMessage(plugin.lang.plotDeleted);
 		return true;
 	}
