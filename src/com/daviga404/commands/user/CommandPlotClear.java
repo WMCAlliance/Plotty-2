@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 public class CommandPlotClear extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotClear(Plotty pl) {
 		super(
@@ -25,6 +25,7 @@ public class CommandPlotClear extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		if (!plugin.dm.config.clearEnabled) {
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Clearing of plots is prohibited.");

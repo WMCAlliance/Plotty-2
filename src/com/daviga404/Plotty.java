@@ -11,6 +11,7 @@ import com.daviga404.plots.PlotRegion;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import net.milkbowl.vault.economy.Economy;
@@ -38,6 +39,7 @@ public class Plotty extends JavaPlugin {
 	public LangManager langMan;
 	public Economy eco;
 
+	@Override
 	public void onEnable() {
 		if (!getWorldGuard() || !getWorldEdit()) {
 			System.out.println("[Plotty] WorldGuard/WorldEdit not found. Exiting.");
@@ -124,7 +126,7 @@ public class Plotty extends JavaPlugin {
 		PlotRegion.makePlotRegion(legacy, p, id);
 		dm.addPlot(legacy, p.getUniqueId(), id);
 		telePlayer(legacy, p);
-		String msg = "";
+		String msg;
 		msg = claiming ? lang.plotClaimed : lang.createdPlot;
 		msg += usedEco ? "\n" + lang.moneyTaken.replace("%s", eco.format(dm.config.plotCost)) : "";
 		msg = msg.replaceAll("%s", id + "");
@@ -156,7 +158,7 @@ public class Plotty extends JavaPlugin {
 	}
 
 	public void telePlayer(Plot p, Player pl) {
-		int y = 0;
+		int y;
 		if (getDataManager().config.centertp) {
 			int x = Math.round(p.getX() + (plotSize / 2));
 			int z = Math.round(p.getZ() + (plotSize / 2));
@@ -197,10 +199,8 @@ public class Plotty extends JavaPlugin {
 	public Material surface = Material.GRASS;
 
 	private List<UUID> stringArrayToList(UUID[] array) {
-		List<UUID> list = new ArrayList<UUID>();
-		for (UUID s : array) {
-			list.add(s);
-		}
+		List<UUID> list = new ArrayList<>();
+		list.addAll(Arrays.asList(array));
 		return list;
 	}
 }

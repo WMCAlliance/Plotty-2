@@ -26,5 +26,5 @@ public class PlottyConfig {
 	public Map<UUID, PlottyPlayer> playerPlots = new HashMap<>();
 	public boolean enableEco = false;
 	public double plotCost = 0.0;
-	public Map<String, String> flags = new HashMap<String, String>();
+	public Map<String, String> flags = new HashMap<>();
 }

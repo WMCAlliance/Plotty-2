@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 public class CommandPlotFriend extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotFriend(Plotty plugin) {
 		super(
@@ -25,6 +25,7 @@ public class CommandPlotFriend extends PlottyCommand {
 		this.plugin = plugin;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		//Check if player has plot by id
 		DataManager dm = plugin.getDataManager();

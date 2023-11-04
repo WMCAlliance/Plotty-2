@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 
 public class CommandPlotDel extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotDel(Plotty pl) {
 		super(
@@ -30,6 +30,7 @@ public class CommandPlotDel extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		if (PlotDeleter.isCooling(p.getUniqueId())) {
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "You cannot delete another plot for " + plugin.dm.config.delCooldown + " seconds.");

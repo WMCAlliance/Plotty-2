@@ -26,6 +26,7 @@ public class CommandPlotGrant extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		int amount = 1;
 		if (args.length == 2) {

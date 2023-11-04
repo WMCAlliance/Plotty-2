@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 public class CommandPlotVote extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotVote(Plotty pl) {
 		super(
@@ -26,6 +26,7 @@ public class CommandPlotVote extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		DataManager dm = plugin.getDataManager();
 		PlottyPlayer player = dm.getPlayerOrCreate(p);

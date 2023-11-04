@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 
 public class CommandPlotInfo extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotInfo(Plotty pl) {
 		super(
@@ -36,6 +36,7 @@ public class CommandPlotInfo extends PlottyCommand {
 		return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(p), Flags.BUILD);
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		Location l = p.getLocation();
 		int x = l.getBlockX();
@@ -76,7 +77,7 @@ public class CommandPlotInfo extends PlottyCommand {
 		for (String friend : plot.friends) {
 			friends += friend + ", ";
 		}
-		if (friends == "") {
+		if (friends.isEmpty()) {
 			friends = "none.";
 		} else {
 			friends = friends.substring(0, friends.length() - 2);

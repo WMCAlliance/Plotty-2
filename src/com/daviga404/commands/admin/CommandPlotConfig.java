@@ -24,6 +24,7 @@ public class CommandPlotConfig extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		/*
 			public int plotSize;
@@ -276,7 +277,7 @@ public class CommandPlotConfig extends PlottyCommand {
 			p.sendMessage(ChatColor.GREEN + "[Plotty] World added to config.");
 			return true;
 		} else if (args.length == 3 && args[0].equalsIgnoreCase("worlds") && args[1].equalsIgnoreCase("remove")) {
-			ArrayList<String> newWorlds = new ArrayList<String>();
+			ArrayList<String> newWorlds = new ArrayList<>();
 			boolean found = false;
 			for (String world : c.worlds) {
 				if (!world.equalsIgnoreCase(args[2])) {
@@ -302,37 +303,37 @@ public class CommandPlotConfig extends PlottyCommand {
 			return true;
 		} else {
 			StringBuilder b = new StringBuilder();
-			b.append(ChatColor.DARK_BLUE + "[Plotty] " + ChatColor.BLUE + "Config Values:\n");
-			b.append(ChatColor.BLUE + "plotSize: " + ChatColor.AQUA);
+			b.append(ChatColor.DARK_BLUE).append("[Plotty] ").append(ChatColor.BLUE).append("Config Values:\n");
+			b.append(ChatColor.BLUE).append("plotSize: ").append(ChatColor.AQUA);
 			b.append(c.plotSize);
-			b.append("\n" + ChatColor.BLUE + "plotHeight: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("plotHeight: ").append(ChatColor.AQUA);
 			b.append(c.plotHeight);
-			b.append("\n" + ChatColor.BLUE + "maxPlots: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("maxPlots: ").append(ChatColor.AQUA);
 			b.append(c.maxPlots);
-			b.append("\n" + ChatColor.BLUE + "baseBlock: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("baseBlock: ").append(ChatColor.AQUA);
 			b.append(c.baseBlock);
-			b.append("\n" + ChatColor.BLUE + "surfaceBlock: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("surfaceBlock: ").append(ChatColor.AQUA);
 			b.append(c.surfaceBlock);
-			b.append("\n" + ChatColor.BLUE + "delCooldown: " + ChatColor.AQUA);
-			b.append(c.delCooldown + "s");
-			b.append("\n" + ChatColor.BLUE + "clearOnDelete: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("delCooldown: ").append(ChatColor.AQUA);
+			b.append(c.delCooldown).append("s");
+			b.append("\n").append(ChatColor.BLUE).append("clearOnDelete: ").append(ChatColor.AQUA);
 			b.append(c.clearOnDelete ? "yes" : "no");
-			b.append("\n" + ChatColor.BLUE + "clearEnabled: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("clearEnabled: ").append(ChatColor.AQUA);
 			b.append(c.clearEnabled ? "yes" : "no");
-			b.append("\n" + ChatColor.BLUE + "worlds: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("worlds: ").append(ChatColor.AQUA);
 			String s = "";
 			for (String ss : c.worlds) {
 				s += ss + ", ";
 			}
 			s = s.substring(0, s.length() - 2);
 			b.append(s);
-			b.append("\n" + ChatColor.BLUE + "centertp: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("centertp: ").append(ChatColor.AQUA);
 			b.append(c.centertp ? "yes" : "no");
-			b.append("\n" + ChatColor.BLUE + "publicByDefault: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("publicByDefault: ").append(ChatColor.AQUA);
 			b.append(c.publicByDefault ? "yes" : "no");
-			b.append("\n" + ChatColor.BLUE + "enableTnt: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("enableTnt: ").append(ChatColor.AQUA);
 			b.append(c.enableTnt ? "yes" : "no");
-			b.append("\n" + ChatColor.BLUE + "voteDelay: " + ChatColor.AQUA);
+			b.append("\n").append(ChatColor.BLUE).append("voteDelay: ").append(ChatColor.AQUA);
 			b.append(c.voteDelay);
 			p.sendMessage(b.toString());
 		}

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class CommandPlotPrivate extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotPrivate(Plotty pl) {
 		super(
@@ -23,6 +23,7 @@ public class CommandPlotPrivate extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		DataManager dm = plugin.getDataManager();
 		PlottyPlot plot = dm.getPlotFromId(Integer.parseInt(args[0]));

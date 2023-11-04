@@ -17,9 +17,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
-public class DataManager {
+public final class DataManager {
 
 	public File file;
 	public Gson gson;
@@ -77,42 +76,43 @@ public class DataManager {
 		if (!file.exists()) {
 			file.createNewFile();
 			Bukkit.getLogger().info("[Plotty] Creating default plots file...");
-			FileWriter out = new FileWriter(file);
-			out.write(gson.toJson(defaultConfig));
-			out.flush();
-			config = defaultConfig;
-			Bukkit.getLogger().info("[Plotty] Created default plots file (plugins/Plotty/plots.json)");
-			out.close();
-		} else {
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-			String ln, buff = "";
-			while ((ln = br.readLine()) != null) {
-				buff += ln;
+			try (FileWriter out = new FileWriter(file)) {
+				out.write(gson.toJson(defaultConfig));
+				out.flush();
+				config = defaultConfig;
+				Bukkit.getLogger().info("[Plotty] Created default plots file (plugins/Plotty/plots.json)");
 			}
-			config = gson.fromJson(buff, PlottyConfig.class);
-			Bukkit.getLogger().info("[Plotty] Plotty data loaded.");
-			br.close();
+		} else {
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+				String ln, buff = "";
+				while ((ln = br.readLine()) != null) {
+					buff += ln;
+				}
+				config = gson.fromJson(buff, PlottyConfig.class);
+				Bukkit.getLogger().info("[Plotty] Plotty data loaded.");
+			}
 		}
 		migratePlayers();
 		checkDefaults();
 	}
 
 	public void migratePlayers() {
-		if (config.players == null)
+		PlottyPlayer[] players = config.players;
+		if (players == null)
 			return;
-		if (config.players.length == 0 || !config.playerPlots.isEmpty())
+		if (players.length == 0 || !config.playerPlots.isEmpty())
 			return;
 
 		Logger l = plugin.getServer().getLogger();
 		l.log(Level.INFO, "[Plotty] Migrating player files for significantly better performance.");
-		for (PlottyPlayer pp : config.players) {
+		for (PlottyPlayer pp : players) {
 			if (pp.uuid == null || pp.uuid.toString().isEmpty()) {
 				plugin.getServer().getLogger().log(Level.INFO, "[Plotty] Failed to migrate player {0}. Missing UUID.", pp.name);
 				continue;
 			}
 			config.playerPlots.put(pp.uuid, pp);
 		}
-		if (config.players.length == config.playerPlots.size()) {
+		if (players.length == config.playerPlots.size()) {
 			l.log(Level.INFO, "[Plotty] Successfully migrated all {0} players.", config.playerPlots.size());
 			config.players = new PlottyPlayer[]{};
 		} else {
@@ -348,7 +348,7 @@ public class DataManager {
 			out.flush();
 			out.close();
 		} catch (Exception e) {
-			Bukkit.getLogger().severe("IOException: " + e.getMessage() + " (" + e.toString() + ")");
+			Bukkit.getLogger().log(Level.SEVERE, "IOException: {0} ({1})", new Object[]{e.getMessage(), e.toString()});
 		}
 	}
 

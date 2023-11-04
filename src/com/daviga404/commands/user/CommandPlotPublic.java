@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class CommandPlotPublic extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotPublic(Plotty pl) {
 		super(
@@ -24,6 +24,7 @@ public class CommandPlotPublic extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		DataManager dm = plugin.getDataManager();
 		PlottyPlot plot = dm.getPlotFromId(Integer.parseInt(args[0]));

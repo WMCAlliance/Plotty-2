@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 public class CommandPlotUnfriend extends PlottyCommand {
 	
-	private Plotty plugin;
+	private final Plotty plugin;
 	
 	public CommandPlotUnfriend(Plotty pl) {
 		super(
@@ -25,6 +25,7 @@ public class CommandPlotUnfriend extends PlottyCommand {
 		this.plugin = pl;
 	}
 	
+	@Override
 	public boolean execute(Player p, String[] args) {
 		//Check if player has plot
 		DataManager dm = plugin.getDataManager();

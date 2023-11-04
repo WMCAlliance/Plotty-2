@@ -10,7 +10,7 @@ import com.daviga404.plots.PlotFinder;
 
 public class CommandPlotNew extends PlottyCommand {
 
-	Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotNew(Plotty plugin) {
 		super(
@@ -23,6 +23,7 @@ public class CommandPlotNew extends PlottyCommand {
 		this.plugin = plugin;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		//if(p.getWorld().getGenerator() != null && p.getWorld().getGenerator().getClass().toString().equalsIgnoreCase("class uk.co.jacekk.bukkit.infiniteplots.plotsgenerator")){
 		int id = plugin.getDataManager().getLatestId();

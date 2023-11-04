@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 
 public class CommandPlotGList extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotGList(Plotty pl) {
 		super(
@@ -30,9 +30,10 @@ public class CommandPlotGList extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		DataManager dm = plugin.dm;
-		ArrayList<PlottyPlot> plots = new ArrayList<PlottyPlot>();
+		ArrayList<PlottyPlot> plots = new ArrayList<>();
 		for (PlottyPlayer pp : dm.config.playerPlots.values()) {
 			for (PlottyPlot plot : pp.plots) {
 				if (plot.visible) {
@@ -57,20 +58,10 @@ public class CommandPlotGList extends PlottyCommand {
 			page = 0;
 		}
 		if (sortByTop) {
-			Collections.sort(plots, new Comparator<PlottyPlot>() {
-
-				public int compare(PlottyPlot p1, PlottyPlot p2) {
-					return p1.rank - p2.rank;
-				}
-
-			});
+			Collections.sort(plots, (PlottyPlot p1, PlottyPlot p2) -> p1.rank - p2.rank);
 			Collections.reverse(plots);
 		} else {
-			Collections.sort(plots, new Comparator<PlottyPlot>() {
-				public int compare(PlottyPlot p1, PlottyPlot p2) {
-					return p1.id - p2.id;
-				}
-			});
+			Collections.sort(plots, (PlottyPlot p1, PlottyPlot p2) -> p1.id - p2.id);
 		}
 		String title = ChatColor.DARK_BLUE + "" + ChatColor.BOLD + "[Plotty] " + ChatColor.BLUE + "" + ChatColor.BOLD + "Global Plot List (ordered by " + (sortByTop ? "rank" : "ID") + "):\n";
 		if (sortByTop) {
@@ -78,7 +69,7 @@ public class CommandPlotGList extends PlottyCommand {
 		} else {
 			title += ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Format: [ID] Creator (Votes)\n";
 		}
-		ArrayList<String> plotStrings = new ArrayList<String>();
+		ArrayList<String> plotStrings = new ArrayList<>();
 		for (PlottyPlot plot : plots) {
 			UUID plotOwner = dm.getPlotOwner(plot);
 			String plotOwnerName = "Unknown";
@@ -120,7 +111,7 @@ public class CommandPlotGList extends PlottyCommand {
 				pages.add(plotStrings.subList(i, i + 7));
 			}
 		}
-		if (pages.size() == 0) {
+		if (pages.isEmpty()) {
 			p.sendMessage(ChatColor.GRAY + "No plots have been created.");
 			return true;
 		}

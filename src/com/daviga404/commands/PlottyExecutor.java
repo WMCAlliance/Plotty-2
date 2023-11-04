@@ -23,15 +23,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-public class PlottyExecutor implements CommandExecutor, TabExecutor {
+public class PlottyExecutor implements TabExecutor {
 
-	private ArrayList<PlottyCommand> cmds = new ArrayList<PlottyCommand>();
-	private Plotty pl;
+	private final ArrayList<PlottyCommand> cmds = new ArrayList<>();
+	private final Plotty pl;
 
 	public PlottyExecutor(Plotty pl) {
 		this.pl = pl;
@@ -69,10 +68,11 @@ public class PlottyExecutor implements CommandExecutor, TabExecutor {
 		return new ArrayList<>();
 	}
 
+	@Override
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
 		String base = args.length > 0 ? args[0] : "";
 		if (base.equalsIgnoreCase("")) {
-			sender.sendMessage(ChatColor.DARK_BLUE + "Plotty v" + pl.getDescription().getVersion().toString() + " " + ChatColor.AQUA + "by Daviga404\n" + ChatColor.BLUE + "Type /plot ? for help.");
+			sender.sendMessage(ChatColor.DARK_BLUE + "Plotty v" + pl.getDescription().getVersion() + " " + ChatColor.AQUA + "by Daviga404\n" + ChatColor.BLUE + "Type /plot ? for help.");
 			return true;
 		}
 		if (base.equalsIgnoreCase("?") || base.equalsIgnoreCase("help")) {
@@ -95,8 +95,8 @@ public class PlottyExecutor implements CommandExecutor, TabExecutor {
 
 		Player p = (Player) sender;
 
-		ArrayList<PlottyCommand> matches = new ArrayList<PlottyCommand>();
-		ArrayList<PlottyCommand> basematches = new ArrayList<PlottyCommand>();
+		ArrayList<PlottyCommand> matches = new ArrayList<>();
+		ArrayList<PlottyCommand> basematches = new ArrayList<>();
 		String commandString = combineArgs(args);
 		for (PlottyCommand cmd : cmds) {
 			if (base.equalsIgnoreCase(cmd.base)) {
@@ -157,8 +157,8 @@ public class PlottyExecutor implements CommandExecutor, TabExecutor {
 	}
 
 	public void showHelp(CommandSender sender, int page) {
-		ArrayList<List<PlottyCommand>> pages = new ArrayList<List<PlottyCommand>>();
-		ArrayList<PlottyCommand> current = new ArrayList<PlottyCommand>();
+		ArrayList<List<PlottyCommand>> pages = new ArrayList<>();
+		ArrayList<PlottyCommand> current = new ArrayList<>();
 		if (cmds.size() > 8) {
 			for (int i = 0; i < cmds.size(); i++) {
 				if (i % 8 == 0) {

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class CommandPlotReload extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotReload(Plotty pl) {
 		super(
@@ -22,6 +22,7 @@ public class CommandPlotReload extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		try {
 			plugin.dm.checkForFile();

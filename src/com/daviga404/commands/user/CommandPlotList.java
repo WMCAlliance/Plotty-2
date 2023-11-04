@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class CommandPlotList extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotList(Plotty pl) {
 		super(
@@ -24,6 +24,7 @@ public class CommandPlotList extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		DataManager dm = plugin.getDataManager();
 		PlottyPlayer pp = dm.getPlayer(p.getUniqueId());
@@ -34,20 +35,20 @@ public class CommandPlotList extends PlottyCommand {
 		StringBuilder builder = new StringBuilder();
 		builder.append(ChatColor.DARK_BLUE).append("[Plotty] Your Plots:\n");
 		for (PlottyPlot plot : pp.plots) {
-			builder.append(ChatColor.AQUA + "- Plot ");
+			builder.append(ChatColor.AQUA).append("- Plot ");
 			builder.append(plot.id);
-			builder.append(ChatColor.BLUE + " [x:");
+			builder.append(ChatColor.BLUE).append(" [x:");
 			builder.append(plot.x);
 			builder.append(", z:");
 			builder.append(plot.z);
 			builder.append(", w:");
 			builder.append(plot.world);
-			builder.append("] " + ChatColor.AQUA + "[Friends: ");
+			builder.append("] ").append(ChatColor.AQUA).append("[Friends: ");
 			String friendsString = "";
 			for (String s : plot.friends) {
 				friendsString += s + ", ";
 			}
-			if (friendsString != "") {
+			if (!friendsString.isEmpty()) {
 				friendsString = friendsString.substring(0, friendsString.length() - 2);
 			} else {
 				friendsString = "none";

@@ -11,7 +11,7 @@ import com.daviga404.plots.PlotFinder;
 
 public class CommandPlotClaim extends PlottyCommand {
 
-	private Plotty plugin;
+	private final Plotty plugin;
 
 	public CommandPlotClaim(Plotty pl) {
 		super(
@@ -24,6 +24,7 @@ public class CommandPlotClaim extends PlottyCommand {
 		this.plugin = pl;
 	}
 
+	@Override
 	public boolean execute(Player p, String[] args) {
 		//if(plugin.getDataManager().pExceededMaxPlots(p.getName())){
 		//	p.sendMessage(plugin.lang.reachedMaxPlots);
