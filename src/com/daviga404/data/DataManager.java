@@ -294,7 +294,7 @@ public class DataManager {
 		if (config.playerPlots.containsKey(uuid)) return config.playerPlots.get(uuid);
 		return null;
 	}
-	public PlottyPlayer getPlayerOrCreate(Player p) {
+	public PlottyPlayer getPlayerOrCreate(OfflinePlayer p) {
 		UUID uuid = p.getUniqueId();
 		if (config.playerPlots.containsKey(uuid)) return config.playerPlots.get(uuid);
 		PlottyPlayer pp = new PlottyPlayer();

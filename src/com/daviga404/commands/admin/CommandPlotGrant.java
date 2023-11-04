@@ -30,7 +30,11 @@ public class CommandPlotGrant extends PlottyCommand{
 		}
 		DataManager dm = plugin.getDataManager();
 		OfflinePlayer op = plugin.getOfflinePlayer(args[0]);
-		PlottyPlayer pp = dm.getPlayerOrCreate(op.getPlayer());
+        if (!op.isOnline() && !op.hasPlayedBefore()) {
+            p.sendMessage(ChatColor.RED + "[Plotty] That player has never played before!");
+            return true;
+        }
+		PlottyPlayer pp = dm.getPlayerOrCreate(op);
 		pp.grantedPlots += amount;
 		dm.config.playerPlots.put(op.getUniqueId(), pp);
 		dm.save();
@@ -43,7 +47,7 @@ public class CommandPlotGrant extends PlottyCommand{
 				newpgn[i] = s;
 				i++;
 			}
-			newpgn[pgn.length] = plugin.getOfflinePlayer(args[0]).getUniqueId();
+			newpgn[pgn.length] = op.getUniqueId();
 			dm.config.playerGrantNotify = newpgn;
 			dm.save();
 			p.sendMessage(ChatColor.GREEN + "[Plotty] Granted " + ChatColor.DARK_GREEN + amount + ChatColor.GREEN + " plots to " + ChatColor.DARK_BLUE + args[0] + ChatColor.GREEN + ". Player will be notified when they come online.");
