@@ -3,6 +3,7 @@ package com.daviga404.commands.user;
 import com.daviga404.Plotty;
 import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
+import com.daviga404.data.PlottyPlayer;
 import com.daviga404.data.PlottyPlot;
 import com.daviga404.plots.Plot;
 import com.daviga404.plots.PlotDeleter;
@@ -53,10 +54,12 @@ public class CommandPlotDel extends PlottyCommand{
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Error while removing plot (contact daviga404 on Bukkit to report)");
 			return true;
 		}
+		PlottyPlayer po = dm.getPlayer(owner);
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager rm = container.get(BukkitAdapter.adapt(p.getWorld()));
-		if(rm.hasRegion("plot_"+p.getName().toLowerCase()+"_"+plot.id)){
-			rm.removeRegion("plot_"+p.getName().toLowerCase()+"_"+plot.id);
+		String regionName = "plot_"+po.name.toLowerCase()+"_"+plot.id;
+		if(rm.hasRegion(regionName)){
+			rm.removeRegion(regionName);
 		}else{
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Region not found - Plotty will continue. (please report this to an admin)");
 		}
