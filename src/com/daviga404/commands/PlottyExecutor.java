@@ -29,9 +29,11 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 public class PlottyExecutor implements CommandExecutor, TabExecutor {
+
 	private ArrayList<PlottyCommand> cmds = new ArrayList<PlottyCommand>();
 	private Plotty pl;
-	public PlottyExecutor(Plotty pl){
+
+	public PlottyExecutor(Plotty pl) {
 		this.pl = pl;
 		cmds.add(new CommandPlotNew(pl));
 		cmds.add(new CommandPlotList(pl));
@@ -51,13 +53,14 @@ public class PlottyExecutor implements CommandExecutor, TabExecutor {
 		cmds.add(new CommandPlotReload(pl));
 		cmds.add(new CommandPlotGrant(pl));
 	}
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		if (args.length == 1) {
 			String base = args.length > 0 ? args[0] : "";
 			ArrayList<String> matches = new ArrayList<>();
-			for(PlottyCommand cmd : cmds){
-				if(cmd.base.startsWith(base)){
+			for (PlottyCommand cmd : cmds) {
+				if (cmd.base.startsWith(base)) {
 					matches.add(cmd.base);
 				}
 			}
@@ -65,124 +68,126 @@ public class PlottyExecutor implements CommandExecutor, TabExecutor {
 		}
 		return new ArrayList<>();
 	}
-	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
+
+	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
 		String base = args.length > 0 ? args[0] : "";
-		if(base.equalsIgnoreCase("")){
-			sender.sendMessage(ChatColor.DARK_BLUE + "Plotty v"+pl.getDescription().getVersion().toString()+" " + ChatColor.AQUA + "by Daviga404\n" + ChatColor.BLUE + "Type /plot ? for help.");
+		if (base.equalsIgnoreCase("")) {
+			sender.sendMessage(ChatColor.DARK_BLUE + "Plotty v" + pl.getDescription().getVersion().toString() + " " + ChatColor.AQUA + "by Daviga404\n" + ChatColor.BLUE + "Type /plot ? for help.");
 			return true;
 		}
-		if(base.equalsIgnoreCase("?") || base.equalsIgnoreCase("help")){
-			if(args.length > 1){
+		if (base.equalsIgnoreCase("?") || base.equalsIgnoreCase("help")) {
+			if (args.length > 1) {
 				try {
-					showHelp(sender,Integer.parseInt(args[1])-1);
-				}catch(Exception ex){
-					sender.sendMessage("'"+args[1]+"' is not a number.");
+					showHelp(sender, Integer.parseInt(args[1]) - 1);
+				} catch (Exception ex) {
+					sender.sendMessage("'" + args[1] + "' is not a number.");
 				}
-			}else{
-				showHelp(sender,0);
+			} else {
+				showHelp(sender, 0);
 			}
 			return true;
 		}
-		
-		if(!(sender instanceof Player)){
+
+		if (!(sender instanceof Player)) {
 			sender.sendMessage(pl.lang.mustBePlayer);
 			return true;
 		}
-		
-		Player p = (Player)sender;
-		
+
+		Player p = (Player) sender;
+
 		ArrayList<PlottyCommand> matches = new ArrayList<PlottyCommand>();
 		ArrayList<PlottyCommand> basematches = new ArrayList<PlottyCommand>();
 		String commandString = combineArgs(args);
-		for(PlottyCommand cmd : cmds){
-			if(base.equalsIgnoreCase(cmd.base)){
+		for (PlottyCommand cmd : cmds) {
+			if (base.equalsIgnoreCase(cmd.base)) {
 				Pattern pat = Pattern.compile(cmd.regex);
 				Matcher mat = pat.matcher(commandString);
-				if(mat.matches()){
+				if (mat.matches()) {
 					matches.add(cmd);
-				}else{
-					System.out.println("Base Matches, Command Doesn't, Command: "+commandString);
+				} else {
+					System.out.println("Base Matches, Command Doesn't, Command: " + commandString);
 					basematches.add(cmd);
 				}
 			}
 		}
-		
-		if(matches.size() < 1){
-			if(basematches.size() < 1){
+
+		if (matches.size() < 1) {
+			if (basematches.size() < 1) {
 				p.sendMessage(ChatColor.RED + "[Plotty] Unknown command. Type /plot ? for help.");
-			}else{
-				if(basematches.size() == 1){
-					p.sendMessage(ChatColor.RED + "[Plotty] Usage: "+basematches.get(0).usage);
-				}else{
+			} else {
+				if (basematches.size() == 1) {
+					p.sendMessage(ChatColor.RED + "[Plotty] Usage: " + basematches.get(0).usage);
+				} else {
 					p.sendMessage(ChatColor.DARK_RED + "[Plotty] Multiple possible matches for your command were found:");
-					for(PlottyCommand match : basematches){
-						p.sendMessage(ChatColor.RED + "[Plotty] "+match.usage);
+					for (PlottyCommand match : basematches) {
+						p.sendMessage(ChatColor.RED + "[Plotty] " + match.usage);
 					}
 				}
 			}
 			return true;
-		}else if(matches.size() > 1){
+		} else if (matches.size() > 1) {
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] Multiple possible matches for your command were found:");
-			for(PlottyCommand match : matches){
-				p.sendMessage(ChatColor.RED + "[Plotty] "+match.usage);
+			for (PlottyCommand match : matches) {
+				p.sendMessage(ChatColor.RED + "[Plotty] " + match.usage);
 			}
 			return true;
 		}
-		
+
 		PlottyCommand cmd = matches.get(0);
-		
-		if(!(p.hasPermission(cmd.permission) || p.hasPermission("plotty.*") || p.isOp())){
+
+		if (!(p.hasPermission(cmd.permission) || p.hasPermission("plotty.*") || p.isOp())) {
 			p.sendMessage(ChatColor.RED + "[Plotty] You do not have access to this command.");
 			return true;
 		}
-		
+
 		boolean isInRightWorld = false;
-		for(String worldName : pl.dm.config.worlds){
-			if(p.getWorld().getName().equalsIgnoreCase(worldName)){
+		for (String worldName : pl.dm.config.worlds) {
+			if (p.getWorld().getName().equalsIgnoreCase(worldName)) {
 				isInRightWorld = true;
 			}
 		}
-		if(isInRightWorld || !cmd.plotsWorld){
-			String[] newargs = new String[args.length-1];
-			System.arraycopy(args, 1, newargs, 0, newargs.length);		
+		if (isInRightWorld || !cmd.plotsWorld) {
+			String[] newargs = new String[args.length - 1];
+			System.arraycopy(args, 1, newargs, 0, newargs.length);
 			cmd.execute(p, newargs);
-		}else{
+		} else {
 			p.sendMessage(pl.lang.mustBeInPlotsWorld);
 		}
 		return true;
 	}
-	public void showHelp(CommandSender sender,int page){
+
+	public void showHelp(CommandSender sender, int page) {
 		ArrayList<List<PlottyCommand>> pages = new ArrayList<List<PlottyCommand>>();
 		ArrayList<PlottyCommand> current = new ArrayList<PlottyCommand>();
-		if(cmds.size() > 8){
-			for(int i=0;i<cmds.size();i++){
-				if(i % 8 == 0){
-					pages.add(cmds.subList(i, cmds.size()-i < 8 ? cmds.size() : i+8));
+		if (cmds.size() > 8) {
+			for (int i = 0; i < cmds.size(); i++) {
+				if (i % 8 == 0) {
+					pages.add(cmds.subList(i, cmds.size() - i < 8 ? cmds.size() : i + 8));
 				}
 			}
-		}else{
-			for(PlottyCommand cmd : cmds){
+		} else {
+			for (PlottyCommand cmd : cmds) {
 				current.add(cmd);
 			}
 			pages.add(current);
 		}
-		if(page > pages.size()-1){
+		if (page > pages.size() - 1) {
 			sender.sendMessage(ChatColor.GRAY + "Warning: page not found.");
-			sender.sendMessage(ChatColor.BLUE + "Plotty Help " + ChatColor.AQUA + "(Page 1/"+pages.size()+"):");
-			for(PlottyCommand com : pages.get(0)){
-				if(sender.hasPermission(com.permission) || sender.hasPermission("plotty.*") || sender.isOp()){
+			sender.sendMessage(ChatColor.BLUE + "Plotty Help " + ChatColor.AQUA + "(Page 1/" + pages.size() + "):");
+			for (PlottyCommand com : pages.get(0)) {
+				if (sender.hasPermission(com.permission) || sender.hasPermission("plotty.*") || sender.isOp()) {
 					sender.sendMessage(ChatColor.BLUE + com.usage + ChatColor.AQUA + " - " + com.description);
-				}else{
+				} else {
 					sender.sendMessage(ChatColor.BLUE + "" + ChatColor.STRIKETHROUGH + com.usage + ChatColor.AQUA + "" + ChatColor.STRIKETHROUGH + " - " + com.description);
 				}
 			}
-		}else{
-			sender.sendMessage(ChatColor.DARK_BLUE + "Plotty Help " + ChatColor.AQUA + "(Page "+(page+1)+"/"+pages.size()+"):");
-			for(PlottyCommand com : pages.get(page)){
-				if(sender.hasPermission(com.permission) || sender.hasPermission("plotty.*") || sender.isOp()){
-					sender.sendMessage(ChatColor.BLUE + com.usage + ChatColor.AQUA + " - "+com.description);
-				}else{
-					sender.sendMessage(ChatColor.BLUE + "" + ChatColor.STRIKETHROUGH + com.usage+ ChatColor.AQUA + "" + ChatColor.STRIKETHROUGH + " - "+com.description);
+		} else {
+			sender.sendMessage(ChatColor.DARK_BLUE + "Plotty Help " + ChatColor.AQUA + "(Page " + (page + 1) + "/" + pages.size() + "):");
+			for (PlottyCommand com : pages.get(page)) {
+				if (sender.hasPermission(com.permission) || sender.hasPermission("plotty.*") || sender.isOp()) {
+					sender.sendMessage(ChatColor.BLUE + com.usage + ChatColor.AQUA + " - " + com.description);
+				} else {
+					sender.sendMessage(ChatColor.BLUE + "" + ChatColor.STRIKETHROUGH + com.usage + ChatColor.AQUA + "" + ChatColor.STRIKETHROUGH + " - " + com.description);
 				}
 			}
 		}
@@ -221,12 +226,13 @@ public class PlottyExecutor implements CommandExecutor, TabExecutor {
 			}
 		}*/
 	}
-	public String combineArgs(String[] args){
+
+	public String combineArgs(String[] args) {
 		String finalstr = "";
-		for(String a : args){
+		for (String a : args) {
 			finalstr += a + " ";
 		}
-		finalstr = finalstr.substring(0,finalstr.length()-1);
+		finalstr = finalstr.substring(0, finalstr.length() - 1);
 		return finalstr;
 	}
 }

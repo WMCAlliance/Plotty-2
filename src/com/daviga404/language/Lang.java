@@ -1,6 +1,7 @@
 package com.daviga404.language;
 
 public class Lang {
+
 	public String createdPlot;
 	public String reachedMaxPlots;
 	public String notStandingInPlot;

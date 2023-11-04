@@ -20,35 +20,35 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
 
 public class PlotRegion {
+
 	public static Plotty plugin;
-	public static void init(Plotty pl){
+
+	public static void init(Plotty pl) {
 		PlotRegion.plugin = pl;
 	}
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void makePlotRegion(Plot p,Player owner,int id){
-		String name = "plot_"+owner.getName().toLowerCase()+"_"+id;
-		BlockVector3 point1 = BlockVector3.at(p.getX(),0,p.getZ());
-		BlockVector3 point2 = BlockVector3.at(p.getX()+plugin.plotSize,256,p.getZ()+plugin.plotSize);
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public static void makePlotRegion(Plot p, Player owner, int id) {
+		String name = "plot_" + owner.getName().toLowerCase() + "_" + id;
+		BlockVector3 point1 = BlockVector3.at(p.getX(), 0, p.getZ());
+		BlockVector3 point2 = BlockVector3.at(p.getX() + plugin.plotSize, 256, p.getZ() + plugin.plotSize);
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager rm = container.get(BukkitAdapter.adapt(p.getWorld()));
 		ProtectedCuboidRegion pcr = new ProtectedCuboidRegion(name, point1, point2);
 		pcr.getOwners().addPlayer(owner.getUniqueId());
-		if(!plugin.getDataManager().config.enableTnt){
-			pcr.setFlag(Flags.TNT,State.DENY);
+		if (!plugin.getDataManager().config.enableTnt) {
+			pcr.setFlag(Flags.TNT, State.DENY);
 		}
-		for(Map.Entry<String, String> flag : plugin.getDataManager().config.flags.entrySet()){
+		for (Map.Entry<String, String> flag : plugin.getDataManager().config.flags.entrySet()) {
 			try {
 				/**
-				 * TODO: Fix this flag reader
-				 * The previous version looped through all flags in WG.
-				 * This new code instead loops through the configured flags in Plotty, meaning no loop if it's empty
-				 * However, figuring out the below code to reverse it is a little harder without an example
-				 * I assume it's "TNT": "DENY"
+				 * TODO: Fix this flag reader The previous version looped through all flags in WG. This new code instead loops through the configured flags in Plotty, meaning no loop if it's empty
+				 * However, figuring out the below code to reverse it is a little harder without an example I assume it's "TNT": "DENY"
 				 */
 //				Object obj = flag.parseInput(plugin.worldGuard, s, plugin.getDataManager().config.flags.get(flag.getName()));
 //				Flag f = (Flag)flag;
 //				pcr.setFlag(f, obj);
-			} catch(Exception e1) {
+			} catch (Exception e1) {
 				owner.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Error in config: custom WorldGuard flag has incorrect value.");
 			}
 		}
@@ -59,11 +59,12 @@ public class PlotRegion {
 			e.printStackTrace();
 		}
 	}
-	public static boolean addFriend(int id, Player owner, UUID friend, World w){
-		String name = "plot_"+owner.getName().toLowerCase()+"_"+id;
+
+	public static boolean addFriend(int id, Player owner, UUID friend, World w) {
+		String name = "plot_" + owner.getName().toLowerCase() + "_" + id;
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager rm = container.get(BukkitAdapter.adapt(w));
-		if(rm.getRegion(name) != null){
+		if (rm.getRegion(name) != null) {
 			rm.getRegion(name).getOwners().addPlayer(friend);
 			try {
 				rm.save();
@@ -71,16 +72,17 @@ public class PlotRegion {
 				e.printStackTrace();
 			}
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
-	public static boolean removeFriend(int id, String owner, UUID friend, World w){
-		String name = "plot_"+owner.toLowerCase()+"_"+id;
+
+	public static boolean removeFriend(int id, String owner, UUID friend, World w) {
+		String name = "plot_" + owner.toLowerCase() + "_" + id;
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager rm = container.get(BukkitAdapter.adapt(w));
-		if(rm.getRegion(name) != null){
-			if(rm.getRegion(name).getOwners().contains(friend)){
+		if (rm.getRegion(name) != null) {
+			if (rm.getRegion(name).getOwners().contains(friend)) {
 				rm.getRegion(name).getOwners().removePlayer(friend);
 			}
 			try {
@@ -89,7 +91,7 @@ public class PlotRegion {
 				e.printStackTrace();
 			}
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}

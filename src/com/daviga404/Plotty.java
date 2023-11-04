@@ -28,7 +28,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Plotty extends JavaPlugin{
+public class Plotty extends JavaPlugin {
+
 	public WorldGuardPlugin worldGuard;
 	public WorldEditPlugin worldEdit;
 	public PlotClearer pc;
@@ -36,8 +37,9 @@ public class Plotty extends JavaPlugin{
 	public Lang lang;
 	public LangManager langMan;
 	public Economy eco;
-	public void onEnable(){
-		if(!getWorldGuard() || !getWorldEdit()){
+
+	public void onEnable() {
+		if (!getWorldGuard() || !getWorldEdit()) {
 			System.out.println("[Plotty] WorldGuard/WorldEdit not found. Exiting.");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
@@ -58,14 +60,14 @@ public class Plotty extends JavaPlugin{
 		}
 		lang = langMan.getLang();
 		initVault();
-		this.getServer().getPluginManager().registerEvents(new Listener(){
+		this.getServer().getPluginManager().registerEvents(new Listener() {
 			@SuppressWarnings("unused")
 			@EventHandler(priority = EventPriority.NORMAL)
-			public void onPlayerJoin(PlayerJoinEvent e){
+			public void onPlayerJoin(PlayerJoinEvent e) {
 				List<UUID> list = stringArrayToList(dm.config.playerGrantNotify);
-				if(list.contains(e.getPlayer().getUniqueId())){
+				if (list.contains(e.getPlayer().getUniqueId())) {
 					int grantedPlots = dm.getPlayer(e.getPlayer().getUniqueId()).grantedPlots;
-					if(grantedPlots > 0){
+					if (grantedPlots > 0) {
 						e.getPlayer().sendMessage(ChatColor.DARK_BLUE + "[Plotty] " + ChatColor.AQUA + "You have " + ChatColor.BLUE + grantedPlots + " " + ChatColor.AQUA + "plots allocated to you. You can claim them with /plot claim or /plot new!");
 					}
 					list.remove(e.getPlayer().getUniqueId());
@@ -76,115 +78,127 @@ public class Plotty extends JavaPlugin{
 			}
 		}, this);
 	}
-	public void initVault(){
+
+	public void initVault() {
 		try {
-			if(Class.forName("net.milkbowl.vault.economy.Economy") != null){
+			if (Class.forName("net.milkbowl.vault.economy.Economy") != null) {
 				RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-				if(economyProvider != null){
+				if (economyProvider != null) {
 					eco = economyProvider.getProvider();
-				}else{
+				} else {
 					eco = null;
 					getServer().getLogger().warning("[Plotty] Vault not detected. Economy features are disabled.");
 				}
-			}else{
+			} else {
 				getServer().getLogger().warning("[Plotty] Vault not detected. Economy features are disabled.");
 			}
 		} catch (ClassNotFoundException e) {
 			getServer().getLogger().warning("[Plotty] Vault not detected. Economy features are disabled.");
 		}
 	}
-	public String makePlot(int id, int x, int y, int z, World w, Player p,boolean claiming){
+
+	public String makePlot(int id, int x, int y, int z, World w, Player p, boolean claiming) {
 		boolean canMake = false;
 		PlottyPlayer pl = dm.getPlayerOrCreate(p);
-		if(pl.grantedPlots > 0){
+		if (pl.grantedPlots > 0) {
 			pl.grantedPlots--;
 			dm.config.playerPlots.put(p.getUniqueId(), pl);
 			dm.save();
 			canMake = true;
-		}else if(!dm.pExceededMaxPlots(p.getUniqueId())){
+		} else if (!dm.pExceededMaxPlots(p.getUniqueId())) {
 			canMake = true;
 		}
-		if(!canMake){
+		if (!canMake) {
 			return lang.reachedMaxPlots;
 		}
 		boolean usedEco = false;
-		if(eco != null && dm.config.enableEco && canMake){
-			if(eco.has(p, dm.config.plotCost)){
+		if (eco != null && dm.config.enableEco && canMake) {
+			if (eco.has(p, dm.config.plotCost)) {
 				usedEco = true;
 				eco.withdrawPlayer(p, dm.config.plotCost);
-			}else{
+			} else {
 				return lang.noMoney;
 			}
 		}
-		Plot legacy = new Plot(x,y,z,w);
+		Plot legacy = new Plot(x, y, z, w);
 		PlotRegion.makePlotRegion(legacy, p, id);
 		dm.addPlot(legacy, p.getUniqueId(), id);
 		telePlayer(legacy, p);
 		String msg = "";
 		msg = claiming ? lang.plotClaimed : lang.createdPlot;
-		msg += usedEco ? "\n"+lang.moneyTaken.replace("%s",eco.format(dm.config.plotCost)) : "";
-		msg = msg.replaceAll("%s",id+"");
+		msg += usedEco ? "\n" + lang.moneyTaken.replace("%s", eco.format(dm.config.plotCost)) : "";
+		msg = msg.replaceAll("%s", id + "");
 		return msg;
 	}
-	public boolean getWorldGuard(){
+
+	public boolean getWorldGuard() {
 		Plugin p = this.getServer().getPluginManager().getPlugin("WorldGuard");
-		if(p == null || !(p instanceof WorldGuardPlugin)) return false;
-		worldGuard = (WorldGuardPlugin)p;
+		if (p == null || !(p instanceof WorldGuardPlugin))
+			return false;
+		worldGuard = (WorldGuardPlugin) p;
 		return true;
 	}
-	public boolean getWorldEdit(){
+
+	public boolean getWorldEdit() {
 		Plugin p = this.getServer().getPluginManager().getPlugin("WorldEdit");
-		if(p == null | !(p instanceof WorldEditPlugin)) return false;
-		worldEdit = (WorldEditPlugin)p;
+		if (p == null | !(p instanceof WorldEditPlugin))
+			return false;
+		worldEdit = (WorldEditPlugin) p;
 		return true;
 	}
-	public PlotClearer getPlotClearer(){
+
+	public PlotClearer getPlotClearer() {
 		return pc;
 	}
-	public DataManager getDataManager(){
+
+	public DataManager getDataManager() {
 		return dm;
 	}
-	public void telePlayer(Plot p, Player pl){
-		int y=0;
-		if(getDataManager().config.centertp){
-			int x = Math.round(p.getX()+(plotSize/2));
-			int z = Math.round(p.getZ()+(plotSize/2));
-			int fy=0; //final y
-			for(y=0;y<256;y++){
-				if(new Location(p.getWorld(),x,y,z).getBlock().getType().isSolid()){
+
+	public void telePlayer(Plot p, Player pl) {
+		int y = 0;
+		if (getDataManager().config.centertp) {
+			int x = Math.round(p.getX() + (plotSize / 2));
+			int z = Math.round(p.getZ() + (plotSize / 2));
+			int fy = 0; //final y
+			for (y = 0; y < 256; y++) {
+				if (new Location(p.getWorld(), x, y, z).getBlock().getType().isSolid()) {
 					fy = y;
 				}
 			}
 			fy++;
-			pl.teleport(new Location(p.getWorld(),x,fy,z));
-		}else{
+			pl.teleport(new Location(p.getWorld(), x, fy, z));
+		} else {
 			int x = p.getX();
 			int z = p.getZ();
-			int fy=0; //final y
-			for(y=0;y<256;y++){
-				if(new Location(p.getWorld(),x,y,z).getBlock().getType().isSolid()){
+			int fy = 0; //final y
+			for (y = 0; y < 256; y++) {
+				if (new Location(p.getWorld(), x, y, z).getBlock().getType().isSolid()) {
 					fy = y;
 				}
 			}
 			fy++;
-			pl.teleport(new Location(p.getWorld(),x,fy,z));
+			pl.teleport(new Location(p.getWorld(), x, fy, z));
 		}
 	}
 
-    @SuppressWarnings("deprecation")
-    public OfflinePlayer getOfflinePlayer(String name) {
-        OfflinePlayer op = getServer().getPlayerExact(name);
-        if (op == null) op = getServer().getPlayer(name);
-        if (op == null) op = getServer().getOfflinePlayer(name);
-        return op;
-    }
-	public int plotSize=64;
-	public int plotHeight=20;
-	public Material base=Material.STONE;
-	public Material surface=Material.GRASS;
-	private List<UUID> stringArrayToList(UUID[] array){
+	@SuppressWarnings("deprecation")
+	public OfflinePlayer getOfflinePlayer(String name) {
+		OfflinePlayer op = getServer().getPlayerExact(name);
+		if (op == null)
+			op = getServer().getPlayer(name);
+		if (op == null)
+			op = getServer().getOfflinePlayer(name);
+		return op;
+	}
+	public int plotSize = 64;
+	public int plotHeight = 20;
+	public Material base = Material.STONE;
+	public Material surface = Material.GRASS;
+
+	private List<UUID> stringArrayToList(UUID[] array) {
 		List<UUID> list = new ArrayList<UUID>();
-		for(UUID s : array){
+		for (UUID s : array) {
 			list.add(s);
 		}
 		return list;

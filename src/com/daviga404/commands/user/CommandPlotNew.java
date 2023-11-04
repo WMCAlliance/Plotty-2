@@ -11,14 +11,14 @@ import com.daviga404.plots.PlotFinder;
 public class CommandPlotNew extends PlottyCommand {
 
 	Plotty plugin;
-	
-	public CommandPlotNew(Plotty plugin){
+
+	public CommandPlotNew(Plotty plugin) {
 		super(
-		"new",
-		"new",
-		"plotty.new",
-		"/plot new",
-		"Makes a new plot."
+				"new",
+				"new",
+				"plotty.new",
+				"/plot new",
+				"Makes a new plot."
 		);
 		this.plugin = plugin;
 	}

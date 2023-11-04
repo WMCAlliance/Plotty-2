@@ -11,19 +11,22 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class CommandPlotVote extends PlottyCommand{
+public class CommandPlotVote extends PlottyCommand {
+
 	private Plotty plugin;
-	public CommandPlotVote(Plotty pl){
+
+	public CommandPlotVote(Plotty pl) {
 		super(
-		"vote",
-		"(vote)",
-		"plotty.vote",
-		"/plot vote",
-		"Upvotes the plot you are standing in."
+				"vote",
+				"(vote)",
+				"plotty.vote",
+				"/plot vote",
+				"Upvotes the plot you are standing in."
 		);
 		this.plugin = pl;
 	}
-	public boolean execute(Player p, String[] args){
+
+	public boolean execute(Player p, String[] args) {
 		DataManager dm = plugin.getDataManager();
 		PlottyPlayer player = dm.getPlayerOrCreate(p);
 		if (player == null) {
@@ -31,31 +34,31 @@ public class CommandPlotVote extends PlottyCommand{
 			return false;
 		}
 		long lastVoted = player.lastVoted;
-		if(lastVoted == 0 || now()-lastVoted > (dm.config.voteDelay*60*60*1000)){
+		if (lastVoted == 0 || now() - lastVoted > (dm.config.voteDelay * 60 * 60 * 1000)) {
 			Location l = p.getLocation();
 			int x = l.getBlockX();
 			int z = l.getBlockZ();
 			Integer[] corners = PlotFinder.getCornerFromCoords(x, z, plugin.plotSize);
-			if(corners.length != 2){
+			if (corners.length != 2) {
 				p.sendMessage(plugin.lang.notStandingInPlot);
 				return true;
 			}
 			PlottyPlot plot = dm.getPlotFromCoords(corners[0], corners[1]);
-			if(plot == null){
+			if (plot == null) {
 				p.sendMessage(plugin.lang.plotFree);
 				return true;
 			}
-			if(!plot.visible){
+			if (!plot.visible) {
 				p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "This plot is private.");
 				return true;
 			}
-			plot.rank = plot.rank+1;
-			if(dm.getPlotOwner(plot) == null || dm.getPlayer(dm.getPlotOwner(plot)) == null){
+			plot.rank = plot.rank + 1;
+			if (dm.getPlotOwner(plot) == null || dm.getPlayer(dm.getPlotOwner(plot)) == null) {
 				p.sendMessage(ChatColor.DARK_RED + "ERROR: " + ChatColor.RED + "Owner's playerdata not found.");
 				return true;
 			}
 			PlottyPlayer owner = dm.getPlayer(dm.getPlotOwner(plot));
-			if(owner.uuid.toString().equalsIgnoreCase(player.uuid.toString())){
+			if (owner.uuid.toString().equalsIgnoreCase(player.uuid.toString())) {
 				p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "You can't vote for your own plot!");
 				return true;
 			}
@@ -64,13 +67,14 @@ public class CommandPlotVote extends PlottyCommand{
 			player.lastVoted = now();
 			dm.config.playerPlots.put(player.uuid, player);
 			dm.save();
-		}else{
-			p.sendMessage(plugin.lang.cantVote.replaceAll("%s", Math.round(((lastVoted+(dm.config.voteDelay*60*60*1000))-now())/1000/60)+""));
+		} else {
+			p.sendMessage(plugin.lang.cantVote.replaceAll("%s", Math.round(((lastVoted + (dm.config.voteDelay * 60 * 60 * 1000)) - now()) / 1000 / 60) + ""));
 			return true;
 		}
 		return true;
 	}
-	public long now(){
+
+	public long now() {
 		Calendar cal = Calendar.getInstance();
 		return cal.getTimeInMillis();
 	}

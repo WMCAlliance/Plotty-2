@@ -6,20 +6,23 @@ import com.daviga404.language.LangManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class CommandPlotReload extends PlottyCommand{
+public class CommandPlotReload extends PlottyCommand {
+
 	private Plotty plugin;
-	public CommandPlotReload(Plotty pl){
+
+	public CommandPlotReload(Plotty pl) {
 		super(
-		"reload",
-		"(reload)",
-		"plotty.admin.reload",
-		"/plot reload",
-		"Reloads the configuration and language files.",
-		false
+				"reload",
+				"(reload)",
+				"plotty.admin.reload",
+				"/plot reload",
+				"Reloads the configuration and language files.",
+				false
 		);
 		this.plugin = pl;
 	}
-	public boolean execute(Player p, String[] args){
+
+	public boolean execute(Player p, String[] args) {
 		try {
 			plugin.dm.checkForFile();
 			plugin.langMan = new LangManager(plugin);

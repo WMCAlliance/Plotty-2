@@ -15,35 +15,39 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class CommandPlotInfo extends PlottyCommand{
+public class CommandPlotInfo extends PlottyCommand {
+
 	private Plotty plugin;
-	public CommandPlotInfo(Plotty pl){
+
+	public CommandPlotInfo(Plotty pl) {
 		super(
-		"info",
-		"(info)",
-		"plotty.info",
-		"/plot info",
-		"Displays info about a plot."
+				"info",
+				"(info)",
+				"plotty.info",
+				"/plot info",
+				"Displays info about a plot."
 		);
 		this.plugin = pl;
 	}
+
 	public boolean canBuild(Player p, Location l) {
-        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
-        com.sk89q.worldedit.util.Location loc = BukkitAdapter.adapt(l);
-        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(p), Flags.BUILD);
-    }
-	public boolean execute(Player p, String[] args){
+		RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+		com.sk89q.worldedit.util.Location loc = BukkitAdapter.adapt(l);
+		return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(p), Flags.BUILD);
+	}
+
+	public boolean execute(Player p, String[] args) {
 		Location l = p.getLocation();
 		int x = l.getBlockX();
 		int z = l.getBlockZ();
 		Integer[] corners = PlotFinder.getCornerFromCoords(x, z, plugin.plotSize);
-		if(corners.length != 2){
+		if (corners.length != 2) {
 			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "You are not standing in a plot.");
 			return true;
 		}
 		DataManager dm = plugin.getDataManager();
 		PlottyPlot plot = dm.getPlotFromCoords(corners[0], corners[1]);
-		if(plot == null){
+		if (plot == null) {
 			p.sendMessage(ChatColor.DARK_BLUE + "[Plotty] " + ChatColor.BLUE + "This plot is free.");
 			return true;
 		}
@@ -54,27 +58,28 @@ public class CommandPlotInfo extends PlottyCommand{
 		String plotOwnerName = "Unknown";
 		if (owner != null) {
 			plotOwnerName = plugin.getServer().getOfflinePlayer(owner).getName();
-			if (plotOwnerName == null) plotOwnerName = dm.getPlayer(owner).name;
+			if (plotOwnerName == null)
+				plotOwnerName = dm.getPlayer(owner).name;
 		}
 		plotInfo.append(plotOwnerName);
 		plotInfo.append("\n").append(ChatColor.BLUE).append("- ID: ").append(ChatColor.AQUA);
 		plotInfo.append(plot.id);
 		plotInfo.append("\n").append(ChatColor.BLUE).append("- Can you build: ").append(ChatColor.AQUA);
 		boolean canBuild = this.canBuild(p, l);
-		if(canBuild){
+		if (canBuild) {
 			plotInfo.append("yes!");
-		}else{
+		} else {
 			plotInfo.append("no :(");
 		}
 		plotInfo.append("\n").append(ChatColor.BLUE).append("- Friends: ").append(ChatColor.AQUA);
-		String friends="";
-		for(String friend : plot.friends){
-			friends += friend+", ";
+		String friends = "";
+		for (String friend : plot.friends) {
+			friends += friend + ", ";
 		}
-		if(friends == ""){
+		if (friends == "") {
 			friends = "none.";
-		}else{
-			friends = friends.substring(0,friends.length()-2);
+		} else {
+			friends = friends.substring(0, friends.length() - 2);
 		}
 		plotInfo.append(friends);
 		plotInfo.append("\n").append(ChatColor.BLUE).append("- Public: ").append(ChatColor.AQUA);

@@ -11,13 +11,15 @@ import java.io.InputStreamReader;
 import org.bukkit.ChatColor;
 
 public class LangManager {
+
 	private Plotty plugin;
 	private File file;
 	private Lang language;
 	private Gson gson;
 	private Lang defaultLang;
 	char amp = '&';
-	public LangManager(Plotty pl) throws Exception{
+
+	public LangManager(Plotty pl) throws Exception {
 		defaultLang = new Lang();
 		defaultLang.alreadyFriend = "&1[Plotty] &9This player is already a friend in your plot.";
 		defaultLang.createdPlot = "&a[Plotty] Plot created with ID &2%s";
@@ -45,20 +47,20 @@ public class LangManager {
 		this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 		this.plugin = pl;
 		File folder = plugin.getDataFolder();
-		file = new File(folder+File.separator+"language.json");
-		if(!folder.exists()){
+		file = new File(folder + File.separator + "language.json");
+		if (!folder.exists()) {
 			folder.mkdir();
 		}
-		if(!file.exists()){
+		if (!file.exists()) {
 			file.createNewFile();
 			FileWriter fw = new FileWriter(file);
-			fw.write(gson.toJson(defaultLang,Lang.class));
+			fw.write(gson.toJson(defaultLang, Lang.class));
 			fw.flush();
 			fw.close();
 		}
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-		String ln,buff="";
-		while((ln = br.readLine()) != null){
+		String ln, buff = "";
+		while ((ln = br.readLine()) != null) {
 			buff += ln;
 		}
 		br.close();
@@ -66,7 +68,8 @@ public class LangManager {
 		language = gson.fromJson(buff, Lang.class);
 		checkDefaults();
 	}
-	public void checkDefaults(){
+
+	public void checkDefaults() {
 		language.alreadyFriend = language.alreadyFriend == null ? defaultLang.alreadyFriend : language.alreadyFriend;
 		language.cantVote = language.cantVote == null ? defaultLang.cantVote : language.cantVote;
 		language.createdPlot = language.createdPlot == null ? defaultLang.createdPlot : language.createdPlot;
@@ -91,35 +94,35 @@ public class LangManager {
 		language.reachedMaxPlots = language.reachedMaxPlots == null ? defaultLang.reachedMaxPlots : language.reachedMaxPlots;
 		language.teleportedToPlot = language.teleportedToPlot == null ? defaultLang.teleportedToPlot : language.teleportedToPlot;
 		//TODO: Properly do this conversion
-        language.alreadyFriend = language.alreadyFriend.replaceAll("\u00A7","&");
-        language.cantVote = language.cantVote.replaceAll("\u00A7","&");
+		language.alreadyFriend = language.alreadyFriend.replaceAll("\u00A7", "&");
+		language.cantVote = language.cantVote.replaceAll("\u00A7", "&");
 		language.createdPlot = language.createdPlot.replaceAll("\u00A7", "&");
 		language.noPlots = language.noPlots.replaceAll("\u00A7", "&");
-        language.dontOwn = language.dontOwn.replaceAll("\u00A7","&");
-        language.friendAdded = language.friendAdded.replaceAll("\u00A7","&");
-        language.friendNotFound = language.friendNotFound.replaceAll("\u00A7","&");
-        language.friendRemoved = language.friendRemoved.replaceAll("\u00A7","&");
-        language.madePrivate = language.madePrivate.replaceAll("\u00A7","&");
-        language.madePublic = language.madePublic.replaceAll("\u00A7","&");
-        language.moneyTaken = language.moneyTaken.replaceAll("\u00A7","&");
-        language.mustBeInPlotsWorld = language.mustBeInPlotsWorld.replaceAll("\u00A7","&");
-        language.mustBePlayer = language.mustBePlayer.replaceAll("\u00A7","&");
-        language.noMoney = language.noMoney.replaceAll("\u00A7","&");
-        language.notFound = language.notFound.replaceAll("\u00A7","&");
-        language.notStandingInPlot = language.notStandingInPlot.replaceAll("\u00A7","&");
-        language.plotClaimed = language.plotClaimed.replaceAll("\u00A7","&");
-        language.plotCleared = language.plotCleared.replaceAll("\u00A7","&");
-        language.plotDeleted = language.plotDeleted.replaceAll("\u00A7","&");
-        language.plotFree = language.plotFree.replaceAll("\u00A7","&");
-        language.plotHere = language.plotHere.replaceAll("\u00A7","&");
-        language.reachedMaxPlots = language.reachedMaxPlots.replaceAll("\u00A7","&");
-        language.teleportedToPlot = language.teleportedToPlot.replaceAll("\u00A7","&");
+		language.dontOwn = language.dontOwn.replaceAll("\u00A7", "&");
+		language.friendAdded = language.friendAdded.replaceAll("\u00A7", "&");
+		language.friendNotFound = language.friendNotFound.replaceAll("\u00A7", "&");
+		language.friendRemoved = language.friendRemoved.replaceAll("\u00A7", "&");
+		language.madePrivate = language.madePrivate.replaceAll("\u00A7", "&");
+		language.madePublic = language.madePublic.replaceAll("\u00A7", "&");
+		language.moneyTaken = language.moneyTaken.replaceAll("\u00A7", "&");
+		language.mustBeInPlotsWorld = language.mustBeInPlotsWorld.replaceAll("\u00A7", "&");
+		language.mustBePlayer = language.mustBePlayer.replaceAll("\u00A7", "&");
+		language.noMoney = language.noMoney.replaceAll("\u00A7", "&");
+		language.notFound = language.notFound.replaceAll("\u00A7", "&");
+		language.notStandingInPlot = language.notStandingInPlot.replaceAll("\u00A7", "&");
+		language.plotClaimed = language.plotClaimed.replaceAll("\u00A7", "&");
+		language.plotCleared = language.plotCleared.replaceAll("\u00A7", "&");
+		language.plotDeleted = language.plotDeleted.replaceAll("\u00A7", "&");
+		language.plotFree = language.plotFree.replaceAll("\u00A7", "&");
+		language.plotHere = language.plotHere.replaceAll("\u00A7", "&");
+		language.reachedMaxPlots = language.reachedMaxPlots.replaceAll("\u00A7", "&");
+		language.teleportedToPlot = language.teleportedToPlot.replaceAll("\u00A7", "&");
 		try {
 			FileWriter fw = new FileWriter(file);
-			fw.write(gson.toJson(language,Lang.class));
+			fw.write(gson.toJson(language, Lang.class));
 			fw.flush();
 			fw.close();
-		}catch(Exception e1){
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		language.alreadyFriend = ChatColor.translateAlternateColorCodes(amp, language.alreadyFriend);
@@ -146,7 +149,8 @@ public class LangManager {
 		language.reachedMaxPlots = ChatColor.translateAlternateColorCodes(amp, language.reachedMaxPlots);
 		language.teleportedToPlot = ChatColor.translateAlternateColorCodes(amp, language.teleportedToPlot);
 	}
-	public Lang getLang(){
+
+	public Lang getLang() {
 		return language;
 	}
 }

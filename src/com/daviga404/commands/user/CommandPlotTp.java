@@ -10,31 +10,37 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class CommandPlotTp extends PlottyCommand{
+public class CommandPlotTp extends PlottyCommand {
+
 	private Plotty plugin;
-	public CommandPlotTp(Plotty pl){
+
+	public CommandPlotTp(Plotty pl) {
 		super(
-		"tp",
-		"(tp)(\\s+)(\\d+)",
-		"plotty.tp",
-		"/plot tp <id>",
-		"Teleports to a plot."
+				"tp",
+				"(tp)(\\s+)(\\d+)",
+				"plotty.tp",
+				"/plot tp <id>",
+				"Teleports to a plot."
 		);
 		this.plugin = pl;
 	}
-	public boolean execute(Player p, String[] args){
-		PlottyPlot pl=null;
+
+	public boolean execute(Player p, String[] args) {
+		PlottyPlot pl = null;
 		DataManager dm = plugin.getDataManager();
 		for (PlottyPlayer player : dm.config.playerPlots.values()) {
-			for(PlottyPlot plot : player.plots){
-				if(plot.id == Integer.parseInt(args[0])){
+			for (PlottyPlot plot : player.plots) {
+				if (plot.id == Integer.parseInt(args[0])) {
 					pl = plot;
 				}
 			}
 		}
-		if(pl == null){p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Plot not found.");return true;}
-		plugin.telePlayer(new Plot(pl.x,plugin.plotHeight,pl.z,Bukkit.getWorld(pl.world)), p);
-		p.sendMessage(plugin.lang.teleportedToPlot.replaceAll("%s", pl.id+""));
+		if (pl == null) {
+			p.sendMessage(ChatColor.DARK_RED + "[Plotty] " + ChatColor.RED + "Plot not found.");
+			return true;
+		}
+		plugin.telePlayer(new Plot(pl.x, plugin.plotHeight, pl.z, Bukkit.getWorld(pl.world)), p);
+		p.sendMessage(plugin.lang.teleportedToPlot.replaceAll("%s", pl.id + ""));
 		return true;
 	}
 }
