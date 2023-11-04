@@ -38,7 +38,7 @@ public class LangManager {
 		defaultLang.plotFree = "&1[Plotty] &9This plot is free.";
 		defaultLang.plotHere = "&4[Plotty] &cThere is a plot here!";
 		defaultLang.reachedMaxPlots = "&4[Plotty] &cYou have reached your maximum number of plots. Type /plot del <id> to delete a plot.";
-		defaultLang.teleportedToPlot = "&1[Plotty] &9Teleported to plot (ID %s).";
+		defaultLang.teleportedToPlot = "&1[Plotty] &9Teleported to plot %s.";
 		defaultLang.mustBePlayer = "[Plotty] You must be a player to use Plotty's commands.";
 		defaultLang.mustBeInPlotsWorld = "&4[Plotty] &cYou must be in a plots world to do this!";
 		defaultLang.cantVote = "&4[Plotty] &cYou cannot vote for another %s minutes.";

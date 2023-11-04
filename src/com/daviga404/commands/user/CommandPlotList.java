@@ -5,7 +5,14 @@ import com.daviga404.commands.PlottyCommand;
 import com.daviga404.data.DataManager;
 import com.daviga404.data.PlottyPlayer;
 import com.daviga404.data.PlottyPlot;
-import org.bukkit.ChatColor;
+
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention;
+import net.md_5.bungee.api.chat.hover.content.Text;
+
 import org.bukkit.entity.Player;
 
 public class CommandPlotList extends PlottyCommand {
@@ -32,31 +39,36 @@ public class CommandPlotList extends PlottyCommand {
 			p.sendMessage(plugin.lang.noPlots);
 			return true;
 		}
-		StringBuilder builder = new StringBuilder();
-		builder.append(ChatColor.DARK_BLUE).append("[Plotty] Your Plots:\n");
+		ComponentBuilder builder = new ComponentBuilder("[Plotty] Your Plots:").color(ChatColor.DARK_BLUE)
+			.append("\n");
 		for (PlottyPlot plot : pp.plots) {
-			builder.append(ChatColor.AQUA).append("- Plot ");
-			builder.append(plot.id);
-			builder.append(ChatColor.BLUE).append(" [x:");
-			builder.append(plot.x);
-			builder.append(", z:");
-			builder.append(plot.z);
-			builder.append(", w:");
-			builder.append(plot.world);
-			builder.append("] ").append(ChatColor.AQUA).append("[Friends: ");
+			builder.append("- ").color(ChatColor.AQUA)
+				.append("Plot ")
+					.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/plot tp " + plot.id))
+					.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(ChatColor.BLUE + "Click to teleport\nto " + ChatColor.AQUA + "plot " + plot.id)))
+				.append(Integer.toString(plot.id))
+				.append(" [x:").color(ChatColor.BLUE)
+				.append(Integer.toString(plot.x))
+				.append(", z:")
+				.append(Integer.toString(plot.z));
+			if (dm.config.worlds.length > 1) {
+				builder.append(", w:")
+					.append(plot.world);
+			}
+			builder.append("]");
 			String friendsString = "";
 			for (String s : plot.friends) {
 				friendsString += s + ", ";
 			}
 			if (!friendsString.isEmpty()) {
 				friendsString = friendsString.substring(0, friendsString.length() - 2);
-			} else {
-				friendsString = "none";
+				builder
+					.append(" [Friends: ", FormatRetention.NONE).color(ChatColor.AQUA)
+					.append(friendsString);
 			}
-			builder.append(friendsString);
-			builder.append("]\n");
+			builder.append("]\n", FormatRetention.NONE).color(ChatColor.AQUA);
 		}
-		p.sendMessage(builder.toString());
+		p.spigot().sendMessage(builder.create());
 		return true;
 	}
 }
