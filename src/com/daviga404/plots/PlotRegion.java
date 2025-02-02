@@ -12,12 +12,9 @@ import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import java.util.Map;
 import java.util.UUID;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BlockVector;
 
 public class PlotRegion {
 
@@ -27,7 +24,6 @@ public class PlotRegion {
 		PlotRegion.plugin = pl;
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static void makePlotRegion(Plot p, Player owner, int id) {
 		String name = "plot_" + owner.getName().toLowerCase() + "_" + id;
 		BlockVector3 point1 = BlockVector3.at(p.getX(), 0, p.getZ());
