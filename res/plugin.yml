@@ -1,6 +1,7 @@
 name: Plotty
 version: ${pluginversion}
 main: com.daviga404.Plotty
+api-version: 1.20
 authors: [Daviga404, The Worldwide Minecraft Alliance]
 softdepend: [WorldEdit, WorldGuard]
 
