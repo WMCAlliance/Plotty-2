@@ -3,6 +3,7 @@ version: ${pluginversion}
 main: com.daviga404.Plotty
 api-version: 1.20
 authors: [Daviga404, The Worldwide Minecraft Alliance]
+website: https://github.com/wmcalliance/plotty-2
 softdepend: [WorldEdit, WorldGuard]
 
 commands:
